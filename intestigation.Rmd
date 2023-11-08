@@ -1,6 +1,6 @@
 ---
 title: "IDS investigation worksheet"
-author: "by Team-Name: Jiayi Wan, Wanfang Zhen, George Zhu, Yifu Li & Junrui Lv"
+author: "by Team-Name: Jiayi Wan, Wanfang Zhen, George Zhu, Yifu Li & Yunrui Lv"
 date: "`r Sys.Date()`"
 output: html_document
 ---
