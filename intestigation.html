@@ -403,6 +403,23 @@ glimpse(FERR)</code></pre>
 ## $ pts_pole     &lt;dbl&gt; 0, 0, 3, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3, …
 ## $ pts_bonus    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, …
 ## $ points       &lt;dbl&gt; 25, 25, 28, 28, 25, 25, 25, 29, 25, 25, 25, 26, 25, 25, 2…</code></pre>
+<pre class="r"><code># season--season number
+# race_num--sequential number of race within the season
+# race_name--Race report race name. Two part races have &quot;race 2&quot; added to it.
+# race_date--Date of race, YYYY-MM-DD
+# driver--driver names, from race reports, but standardized to be consistent
+# car--car number
+# team--team name per race report
+# team_group--subjectively grouped teams, favoring their Season 6 team; allows continuity from sponsorship changes as well as team evolution (Renault/Nissan)
+# rank--rank description, directly from race report
+# rank_num--rank, numeric. Always numeric, even including retirements and unclassified finishes.
+# grid--Starting grid position. Includes pre-race penalties, so not always indicative of strict qualifying results. Will not indicate starts from pit lane. Simply numeric.
+# laps--number of laps completed. Taken directly from race reports.
+# time_retired--Description that changes per type of finish. Final finish time for the leader. Number of seconds behind for those on the same lap. Number of laps behind, if relevant. Description of retirement, if relevant.
+# pts_rank--oints earned, based on finish position.
+# pts_pole--points earned for qualifying on pole. Penalties can cause this to be slightly different than grid:1 (e.g. 2019 Monaco).
+#pts_bonus--points earned through other bonuses such as fastest lap and fastest time in qualifying group stage.
+#points--total Championship points earned. Sum of pts_rank, pts_pole, pts_bonus. Used to validate against final season standings.</code></pre>
 
 
 
