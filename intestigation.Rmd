@@ -78,8 +78,8 @@ points_team <- function(x){
     summarise(TotalPoints = sum(points, na.rm = TRUE))
   return(result)
 }
-
-#visualization of total points of each team in different seasons 
+points_team("1")
+#visualization of total points earned by each team groups in different seasons 
 #using season 1 as an example
 ggplot(points_team("1"),
        mapping = aes(y = team_group, x = TotalPoints)) +
@@ -89,4 +89,11 @@ ggplot(points_team("1"),
     y = "Team Group",
     title = "Total Points Earned By Each Team Group")
 
-
+#visualization of total points earned by each drivers
+ggplot(points_driver("1"),
+       mapping = aes(driver, x = TotalPoints)) +
+  geom_bar(stat = "identity") + 
+  labs(
+    x = "Total Points", 
+    y = "Driver",
+    title = "Total Points Earned By Each Driver")
