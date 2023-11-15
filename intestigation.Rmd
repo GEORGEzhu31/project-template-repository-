@@ -23,7 +23,7 @@ library(dplyr)
 ```{r load-data}
 FERR <- read_csv("data/formula_e_race_results.csv")
 problems()
-glimpse(FERR)
+View(FERR)
 
 # season--season number
 # race_num--sequential number of race within the season
@@ -38,9 +38,51 @@ glimpse(FERR)
 # grid--Starting grid position. Includes pre-race penalties, so not always indicative of strict qualifying results. Will not indicate starts from pit lane. Simply numeric.
 # laps--number of laps completed. Taken directly from race reports.
 # time_retired--Description that changes per type of finish. Final finish time for the leader. Number of seconds behind for those on the same lap. Number of laps behind, if relevant. Description of retirement, if relevant.
-# pts_rank--oints earned, based on finish position.
+# pts_rank--points earned, based on finish position.
 # pts_pole--points earned for qualifying on pole. Penalties can cause this to be slightly different than grid:1 (e.g. 2019 Monaco).
 #pts_bonus--points earned through other bonuses such as fastest lap and fastest time in qualifying group stage.
 #points--total Championship points earned. Sum of pts_rank, pts_pole, pts_bonus. Used to validate against final season standings.
 ```
+#total points of selected driver in specific season
+points_selected_driver <- function(x, y) {
+  result <- FERR %>%
+    filter(x == season, y == driver) %>% 
+    summarise(TotalPoints = sum(points, na.rm = TRUE))
+  return(result)
+}
+
+#total points of selected team
+points_selected_team <- function(x, y) {
+  result <- FERR %>%
+    filter(x == season, y == team_group) %>% 
+    summarise(TotalPoints = sum(points, na.rm = TRUE))
+  return(result)
+}
+
+#list of total points 
+points_driver <- function(x){
+  result <- 
+  FERR %>%
+    filter(x == season) %>%
+    group_by(driver) %>%
+    summarise(TotalPoints = sum(points, na.rm = TRUE))
+  return(result)
+}
+
+#list of total points in teams
+points_team <- function(x){
+  result <- 
+  FERR %>%
+    filter(x == season) %>%
+    group_by(team_group) %>%
+    summarise(TotalPoints = sum(points, na.rm = TRUE))
+  return(result)
+}
+
+#visualization of total points 
+ggplot(points_team("1"), 
+mapping = aes(y = team_group, x = TotalPoints)) +
+geom_point()
+
+
 

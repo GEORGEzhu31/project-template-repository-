@@ -11,7 +11,7 @@
 
 <meta name="author" content="by Team-Name: Jiayi Wan, Wanfang Zhen, George Zhu, Yifu Li &amp; Yunrui Lyu" />
 
-<meta name="date" content="2023-11-08" />
+<meta name="date" content="2023-11-15" />
 
 <title>IDS investigation worksheet</title>
 
@@ -353,7 +353,7 @@ display: none;
 <h1 class="title toc-ignore">IDS investigation worksheet</h1>
 <h4 class="author">by Team-Name: Jiayi Wan, Wanfang Zhen, George Zhu,
 Yifu Li &amp; Yunrui Lyu</h4>
-<h4 class="date">2023-11-08</h4>
+<h4 class="date">2023-11-15</h4>
 
 </div>
 
@@ -383,27 +383,9 @@ library(dplyr)</code></pre>
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>problems()
-glimpse(FERR)</code></pre>
-<pre><code>## Rows: 1,480
-## Columns: 17
-## $ season       &lt;dbl&gt; 2, 1, 5, 6, 6, 6, 4, 4, 4, 4, 5, 5, 1, 2, 2, 3, 3, 1, 2, …
-## $ race_num     &lt;dbl&gt; 2, 4, 1, 2, 3, 8, 5, 9, 10, 11, 4, 10, 1, 6, 7, 4, 11, 6,…
-## $ race_name    &lt;chr&gt; &quot;2015 Putrajaya&quot;, &quot;2015 Buenos Aires&quot;, &quot;2018 Ad Diriyah&quot;,…
-## $ race_date    &lt;date&gt; 2015-11-07, 2015-01-10, 2018-12-15, 2019-11-23, 2020-01-…
-## $ driver       &lt;chr&gt; &quot;Lucas di Grassi&quot;, &quot;António Félix da Costa&quot;, &quot;António Fél…
-## $ car          &lt;dbl&gt; 11, 55, 28, 27, 28, 28, 66, 66, 1, 1, 11, 11, 11, 11, 11,…
-## $ team         &lt;chr&gt; &quot;ABT Schaeffler Audi Sport&quot;, &quot;Amlin Aguri&quot;, &quot;Andretti-BMW…
-## $ team_group   &lt;chr&gt; &quot;Audi&quot;, &quot;Techeetah&quot;, &quot;BMW-Andretti&quot;, &quot;BMW-Andretti&quot;, &quot;BMW…
-## $ rank         &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1…
-## $ rank_num     &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
-## $ grid         &lt;chr&gt; &quot;6&quot;, &quot;8&quot;, &quot;1&quot;, &quot;1&quot;, &quot;2&quot;, &quot;2&quot;, &quot;5&quot;, &quot;1&quot;, &quot;5&quot;, &quot;11&quot;, &quot;2&quot;, &quot;…
-## $ laps         &lt;dbl&gt; 33, 35, 33, 30, 40, 35, 47, 45, 39, 43, 45, 37, 25, 41, 4…
-## $ time_retired &lt;chr&gt; &quot;50:17.449&quot;, &quot;48:52.100&quot;, &quot;46:29.377&quot;, &quot;46:48.327&quot;, &quot;46:1…
-## $ pts_rank     &lt;dbl&gt; 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 2…
-## $ pts_pole     &lt;dbl&gt; 0, 0, 3, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 3, …
-## $ pts_bonus    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, …
-## $ points       &lt;dbl&gt; 25, 25, 28, 28, 25, 25, 25, 29, 25, 25, 25, 26, 25, 25, 2…</code></pre>
-<pre class="r"><code># season--season number
+View(FERR)
+
+# season--season number
 # race_num--sequential number of race within the season
 # race_name--Race report race name. Two part races have &quot;race 2&quot; added to it.
 # race_date--Date of race, YYYY-MM-DD
@@ -416,10 +398,26 @@ glimpse(FERR)</code></pre>
 # grid--Starting grid position. Includes pre-race penalties, so not always indicative of strict qualifying results. Will not indicate starts from pit lane. Simply numeric.
 # laps--number of laps completed. Taken directly from race reports.
 # time_retired--Description that changes per type of finish. Final finish time for the leader. Number of seconds behind for those on the same lap. Number of laps behind, if relevant. Description of retirement, if relevant.
-# pts_rank--oints earned, based on finish position.
+# pts_rank--points earned, based on finish position.
 # pts_pole--points earned for qualifying on pole. Penalties can cause this to be slightly different than grid:1 (e.g. 2019 Monaco).
 #pts_bonus--points earned through other bonuses such as fastest lap and fastest time in qualifying group stage.
 #points--total Championship points earned. Sum of pts_rank, pts_pole, pts_bonus. Used to validate against final season standings.</code></pre>
+<p>#total points of selected driver in specific season
+points_selected_driver &lt;- function(x, y) { result &lt;- FERR %&gt;%
+filter(x == season, y == driver) %&gt;% summarise(TotalPoints =
+sum(points, na.rm = TRUE)) return(result) }</p>
+<p>#total points of selected team points_selected_team &lt;- function(x,
+y) { result &lt;- FERR %&gt;% filter(x == season, y == team_group)
+%&gt;% summarise(TotalPoints = sum(points, na.rm = TRUE)) return(result)
+}</p>
+<p>#list of total points points_driver &lt;- function(x){ result &lt;-
+FERR %&gt;% filter(x == season) %&gt;% group_by(driver) %&gt;%
+summarise(TotalPoints = sum(points, na.rm = TRUE)) return(result) }</p>
+<p>#list of total points in teams points_team &lt;- function(x){ result
+&lt;- FERR %&gt;% filter(x == season) %&gt;% group_by(team_group) %&gt;%
+summarise(TotalPoints = sum(points, na.rm = TRUE)) return(result) }</p>
+<p>#visualization of total points ggplot(points_team(“1”), mapping =
+aes(y = team_group, x = TotalPoints)) + geom_point()</p>
 
 
 
