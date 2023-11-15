@@ -416,8 +416,11 @@ summarise(TotalPoints = sum(points, na.rm = TRUE)) return(result) }</p>
 <p>#list of total points in teams points_team &lt;- function(x){ result
 &lt;- FERR %&gt;% filter(x == season) %&gt;% group_by(team_group) %&gt;%
 summarise(TotalPoints = sum(points, na.rm = TRUE)) return(result) }</p>
-<p>#visualization of total points ggplot(points_team(“1”), mapping =
-aes(y = team_group, x = TotalPoints)) + geom_point()</p>
+<p>#visualization of total points of each team in different seasons
+#using season 1 as an example ggplot(points_team(“1”), mapping = aes(y =
+team_group, x = TotalPoints)) + geom_bar(stat = “identity”) + labs( x =
+“Total Points”, y = “Team Group”, title = “Total Points Earned By Each
+Team Group”)</p>
 
 
 

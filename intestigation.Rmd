@@ -79,10 +79,14 @@ points_team <- function(x){
   return(result)
 }
 
-#visualization of total points 
-ggplot(points_team("1"), 
-mapping = aes(y = team_group, x = TotalPoints)) +
-geom_point()
-
+#visualization of total points of each team in different seasons 
+#using season 1 as an example
+ggplot(points_team("1"),
+       mapping = aes(y = team_group, x = TotalPoints)) +
+  geom_bar(stat = "identity") + 
+  labs(
+    x = "Total Points", 
+    y = "Team Group",
+    title = "Total Points Earned By Each Team Group")
 
 
