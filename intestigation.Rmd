@@ -17,7 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-
 ```
 
 
@@ -27,7 +26,6 @@ FERR <- read_csv("data/formula_e_race_results.csv") %>%
   filter(points != 0)
 problems()
 View(FERR)
-
 ```
 
 
