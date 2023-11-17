@@ -87,9 +87,11 @@ points_driver <- function(x){
   FERR %>%
     filter(x == season) %>%
     group_by(driver) %>%
-    summarise(total_points = sum(points, na.rm = TRUE))
+    summarise(total_points = sum(points, na.rm = TRUE)) %>%
+    arrange(desc(total_points))
   return(result)
 }
+points_driver("1")
 ```
 
 ```{r}
@@ -98,7 +100,8 @@ points_team <- function(x){
   FERR %>%
     filter(x == season) %>%
     group_by(team) %>%
-    summarise(total_points = sum(points, na.rm = TRUE))
+    summarise(total_points = sum(points, na.rm = TRUE)) %>%
+    arrange(desc(total_points))
   return(result)
 }
 points_team("1")
@@ -111,21 +114,22 @@ points_team("1")
 
 ```{r}
 #list of total points in teams
-points_team <- function(x){
+points_teamgroup <- function(x){
   result <- 
   FERR %>%
     filter(x == season) %>%
     group_by(team_group) %>%
-    summarise(total_points = sum(points, na.rm = TRUE))
+    summarise(total_points = sum(points, na.rm = TRUE)) %>%
+    arrange(desc(total_points))
   return(result)
 }
-points_team("1")
+points_teamgroup("1")
 ```
 
 ```{r}
 #visualization of total points earned by each team groups in different seasons
 #using season 1 as an example
-ggplot(points_team("1"),
+ggplot(points_teamgroup("1"),
        mapping = aes(y = team_group, x = total_points)) +
   geom_bar(stat = "identity") + 
   labs(
