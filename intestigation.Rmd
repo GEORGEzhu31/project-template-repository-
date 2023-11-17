@@ -19,29 +19,11 @@ library(dplyr)
 
 ```
 
-```{r}
-
-# season--season number
-# race_num--sequential number of race within the season
-# race_name--Race report race name. Two part races have "race 2" added to it.
-# race_date--Date of race, YYYY-MM-DD
-# driver--driver names, from race reports, but standardized to be consistent
-# car--car number
-# team--team name per race report
-# team_group--subjectively grouped teams, favoring their Season 6 team; allows continuity from sponsorship changes as well as team evolution (Renault/Nissan)
-# rank--rank description, directly from race report
-# rank_num--rank, numeric. Always numeric, even including retirements and unclassified finishes.
-# grid--Starting grid position. Includes pre-race penalties, so not always indicative of strict qualifying results. Will not indicate starts from pit lane. Simply numeric.
-# laps--number of laps completed. Taken directly from race reports.
-# time_retired--Description that changes per type of finish. Final finish time for the leader. Number of seconds behind for those on the same lap. Number of laps behind, if relevant. Description of retirement, if relevant.
-# pts_rank--points earned, based on finish position.
-# pts_pole--points earned for qualifying on pole. Penalties can cause this to be slightly different than grid:1 (e.g. 2019 Monaco).
-#pts_bonus--points earned through other bonuses such as fastest lap and fastest time in qualifying group stage.
-#points--total Championship points earned. Sum of pts_rank, pts_pole, pts_bonus. Used to validate against final season standings.
-```
 
 ```{r load-data}
-FERR <- read_csv("data/formula_e_race_results.csv")
+FERR <- read_csv("data/formula_e_race_results.csv") %>% 
+  # Removing rows where points is 0
+  filter(points != 0)
 problems()
 View(FERR)
 
