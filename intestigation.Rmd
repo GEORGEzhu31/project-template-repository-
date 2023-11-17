@@ -113,12 +113,20 @@ points_team("1")
 #visualization of total points earned by each team in different seasons
 #using season 1 as an example
 ggplot(points_team("1"),
-       mapping = aes(y =  reorder(team, total_points), x = total_points)) +
+       mapping = aes(y =  reorder(team, total_points), 
+                     x = total_points,
+                     fill=total_points)) +
   geom_bar(stat = "identity") + 
+  geom_text(aes(label = total_points), 
+            position = position_dodge(width = 0.9), 
+            hjust = -0.1, 
+            vjust = 0.25, 
+            size = 3) + 
   labs(
     x = "Total Points", 
     y = "Team",
-    title = "Total Points Earned By Each Team")
+    title = "Total Points Earned By Each Team"
+  ) 
 ```
 
 
