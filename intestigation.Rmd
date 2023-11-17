@@ -1,6 +1,6 @@
 ---
 title: "IDS investigation worksheet"
-author: "by Team-Name: Jiayi Wan, Wanfang Zhen, George Zhu, Yifu Li & Yunrui Lyu"
+author: "by Fighting Wolves: Jiayi Wan, Wanfang Zhen, George Zhu, Yifu Li & Yunrui Lyu"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -19,12 +19,6 @@ library(dplyr)
 
 ```
 
-
-```{r load-data}
-FERR <- read_csv("data/formula_e_race_results.csv")
-problems()
-View(FERR)
-
 # season--season number
 # race_num--sequential number of race within the season
 # race_name--Race report race name. Two part races have "race 2" added to it.
@@ -42,6 +36,12 @@ View(FERR)
 # pts_pole--points earned for qualifying on pole. Penalties can cause this to be slightly different than grid:1 (e.g. 2019 Monaco).
 #pts_bonus--points earned through other bonuses such as fastest lap and fastest time in qualifying group stage.
 #points--total Championship points earned. Sum of pts_rank, pts_pole, pts_bonus. Used to validate against final season standings.
+
+```{r load-data}
+FERR <- read_csv("data/formula_e_race_results.csv")
+problems()
+View(FERR)
+
 ```
 #total points of selected driver in specific season
 points_selected_driver <- function(x, y) {
@@ -55,7 +55,7 @@ points_selected_driver <- function(x, y) {
 points_selected_team <- function(x, y) {
   result <- FERR %>%
     filter(x == season, y == team_group) %>% 
-    summarise(TotalPoints = sum(points, na.rm = TRUE))
+    summarise(total_points = sum(points, na.rm = TRUE))
   return(result)
 }
 
@@ -65,7 +65,7 @@ points_driver <- function(x){
   FERR %>%
     filter(x == season) %>%
     group_by(driver) %>%
-    summarise(TotalPoints = sum(points, na.rm = TRUE))
+    summarise(total_points = sum(points, na.rm = TRUE))
   return(result)
 }
 
@@ -75,14 +75,14 @@ points_team <- function(x){
   FERR %>%
     filter(x == season) %>%
     group_by(team_group) %>%
-    summarise(TotalPoints = sum(points, na.rm = TRUE))
+    summarise(total_points = sum(points, na.rm = TRUE))
   return(result)
 }
 points_team("1")
 #visualization of total points earned by each team groups in different seasons 
 #using season 1 as an example
 ggplot(points_team("1"),
-       mapping = aes(y = team_group, x = TotalPoints)) +
+       mapping = aes(y = team_group, x = total_points)) +
   geom_bar(stat = "identity") + 
   labs(
     x = "Total Points", 
@@ -91,9 +91,10 @@ ggplot(points_team("1"),
 
 #visualization of total points earned by each drivers
 ggplot(points_driver("1"),
-       mapping = aes(driver, x = TotalPoints)) +
+       mapping = aes(driver, x = total_points)) +
   geom_bar(stat = "identity") + 
   labs(
     x = "Total Points", 
     y = "Driver",
     title = "Total Points Earned By Each Driver")
+
