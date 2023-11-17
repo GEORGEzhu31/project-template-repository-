@@ -55,6 +55,7 @@ points_selected_driver <- function(x, y) {
     summarise(TotalPoints = sum(points, na.rm = TRUE))
   return(result)
 }
+points_selected_driver("1", "Nelson Piquet Jr.")
 ```
 
 ```{r}
@@ -67,7 +68,17 @@ points_selected_team <- function(x, y) {
 }
 ```
 
-
+```{r}
+#visualization of total points earned by each team in different seasons
+#using season 1 as an example
+ggplot(points_team("1"),
+       mapping = aes(y = team, x = total_points)) +
+  geom_bar(stat = "identity") + 
+  labs(
+    x = "Total Points", 
+    y = "Team",
+    title = "Total Points Earned By Each Team")
+```
 
 ```{r}
 #list of total points 
@@ -79,6 +90,22 @@ points_driver <- function(x){
     summarise(total_points = sum(points, na.rm = TRUE))
   return(result)
 }
+```
+
+```{r}
+points_team <- function(x){
+  result <- 
+  FERR %>%
+    filter(x == season) %>%
+    group_by(team) %>%
+    summarise(total_points = sum(points, na.rm = TRUE))
+  return(result)
+}
+points_team("1")
+```
+
+```{r}
+
 ```
 
 
@@ -107,6 +134,17 @@ ggplot(points_team("1"),
     title = "Total Points Earned By Each Team Group")
 ```
 
+```{r}
+#visualization of total points earned by each team in different seasons
+#using season 1 as an example
+ggplot(points_team("1"),
+       mapping = aes(y = team, x = total_points)) +
+  geom_bar(stat = "identity") + 
+  labs(
+    x = "Total Points", 
+    y = "Team",
+    title = "Total Points Earned By Each Team")
+```
 
 
 
