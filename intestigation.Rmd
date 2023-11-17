@@ -50,32 +50,6 @@ points_selected_team <- function(x, y) {
 }
 ```
 
-```{r list of team}
-#list of total points in teams
-points_teamgroup <- function(x){
-  result <- 
-  FERR %>%
-    filter(x == season) %>%
-    group_by(team_group) %>%
-    summarise(total_points = sum(points, na.rm = TRUE)) %>%
-    arrange(desc(total_points))
-  return(result)
-}
-points_teamgroup("1")
-```
-
-```{r team visualization}
-#visualization of total points earned by each team in different seasons
-#using season 1 as an example
-ggplot(points_team("1"),
-       mapping = aes(y = team, x = total_points)) +
-  geom_bar(stat = "identity") + 
-  labs(
-    x = "Total Points", 
-    y = "Team",
-    title = "Total Points Earned By Each Team")
-```
-
 ```{r list of driver}
 #list of total points 
 points_driver <- function(x){
@@ -93,7 +67,7 @@ points_driver("1")
 ```{r driver visualization}
 #visualization of total points earned by each drivers
 ggplot(points_driver("1"),
-       mapping = aes(y = driver, x = total_points)) +
+       mapping = aes( reorder(driver, total_points), x = total_points)) +
   geom_bar(stat = "identity") + 
   labs(
     x = "Total Points", 
@@ -101,23 +75,25 @@ ggplot(points_driver("1"),
     title = "Total Points Earned By Each Driver")
 ```
 
-```{r teamgroup visualization}
-#visualization of total points earned by each team groups in different seasons
-#using season 1 as an example
-ggplot(points_teamgroup("1"),
-       mapping = aes(y = team_group, x = total_points)) +
-  geom_bar(stat = "identity") + 
-  labs(
-    x = "Total Points", 
-    y = "Team Group",
-    title = "Total Points Earned By Each Team Group")
+```{r list of team}
+#list of total points in teams
+points_team <- function(x){
+  result <- 
+  FERR %>%
+    filter(x == season) %>%
+    group_by(team) %>%
+    summarise(total_points = sum(points, na.rm = TRUE)) %>%
+    arrange(desc(total_points))
+  return(result)
+}
+points_team("1")
 ```
 
 ```{r team visualization}
 #visualization of total points earned by each team in different seasons
 #using season 1 as an example
-ggplot(points_teamgroup("1"),
-       mapping = aes(y = team_group, x = total_points)) +
+ggplot(points_team("1"),
+       mapping = aes(y =  reorder(team, total_points), x = total_points)) +
   geom_bar(stat = "identity") + 
   labs(
     x = "Total Points", 
@@ -125,14 +101,28 @@ ggplot(points_teamgroup("1"),
     title = "Total Points Earned By Each Team")
 ```
 
-```{r driver visualization}
-#visualization of total points earned by each drivers
-ggplot(points_driver("1"),
-       mapping = aes(y = driver, x = total_points)) +
+```{r list of teamgroup}
+
+points_teamgroup <- function(x){
+  result <- 
+  FERR %>%
+    filter(x == season) %>%
+    group_by(team_group) %>%
+    summarise(total_points = sum(points, na.rm = TRUE)) %>%
+    arrange(desc(total_points))
+  return(result)
+}
+points_teamgroup("1")
+```
+
+```{r teamgroup visualization}
+#visualization of total points earned by each team groups in different seasons
+#using season 1 as an example
+ggplot(points_teamgroup("1"),
+       mapping = aes(y = reorder(team_group, total_points), x = total_points)) +
   geom_bar(stat = "identity") + 
   labs(
     x = "Total Points", 
-    y = "Driver",
-    title = "Total Points Earned By Each Driver")
+    y = "Team Group",
+    title = "Total Points Earned By Each Team Group")
 ```
-
