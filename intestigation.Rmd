@@ -89,10 +89,6 @@ points_team <- function(x){
 points_team("1")
 ```
 
-```{r}
-
-```
-
 
 ```{r}
 #list of total points in teams
@@ -137,7 +133,7 @@ ggplot(points_team("1"),
 ```{r}
 #visualization of total points earned by each drivers
 ggplot(points_driver("1"),
-       mapping = aes(driver, x = total_points)) +
+       mapping = aes(y = driver, x = total_points)) +
   geom_bar(stat = "identity") + 
   labs(
     x = "Total Points", 
