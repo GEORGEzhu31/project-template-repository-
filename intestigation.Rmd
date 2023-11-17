@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r load-lib, message = FALSE}
 library(tidyverse)
 library(dplyr)
+library(ggplot2)
 
 ```
 
@@ -29,6 +30,7 @@ View(FERR)
 
 ```
 
+
 ```{r selected driver}
 #total points of selected driver in specific season
 points_selected_driver <- function(x, y) {
@@ -40,18 +42,8 @@ points_selected_driver <- function(x, y) {
 points_selected_driver("1", "Nelson Piquet Jr.")
 ```
 
-```{r selected team}
-#total points of selected team
-points_selected_team <- function(x, y) {
-  result <- FERR %>%
-    filter(x == season, y == team_group) %>% 
-    summarise(total_points = sum(points, na.rm = TRUE))
-  return(result)
-}
-```
 
 ```{r list of driver}
-#list of total points 
 points_driver <- function(x){
   result <- 
   FERR %>%
@@ -64,16 +56,43 @@ points_driver <- function(x){
 points_driver("1")
 ```
 
+
 ```{r driver visualization}
-#visualization of total points earned by each drivers
-ggplot(points_driver("1"),
-       mapping = aes( reorder(driver, total_points), x = total_points)) +
-  geom_bar(stat = "identity") + 
+ggplot(points_driver("1"), aes(x = reorder(driver, total_points), 
+                               y = total_points, 
+                               fill = total_points)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = total_points), 
+            position = position_dodge(width = 0.9), 
+            hjust = -0.1, 
+            vjust = 0.25, 
+            size = 3) +
+  scale_fill_gradient(low = "skyblue", high = "purple") +  # Gradient color based on total points
   labs(
-    x = "Total Points", 
-    y = "Driver",
-    title = "Total Points Earned By Each Driver")
+    x = "Driver", 
+    y = "Total Points",
+    title = "Total Points Earned By Each Driver in Season 1"
+  ) +
+  theme_minimal() +  # A clean, minimal theme
+  theme(
+    plot.title = element_text(hjust = 0.5), # Center the title
+    axis.text.x = element_text(hjust = 1),  # Rotate x-axis labels for better readability
+    legend.title = element_blank() # Remove the legend title
+  ) +
+  coord_flip() # Flip the coordinates to make a horizontal bar plot
 ```
+
+
+```{r selected team}
+#total points of selected team
+points_selected_team <- function(x, y) {
+  result <- FERR %>%
+    filter(x == season, y == team_group) %>% 
+    summarise(total_points = sum(points, na.rm = TRUE))
+  return(result)
+}
+```
+
 
 ```{r list of team}
 #list of total points in teams
@@ -89,6 +108,7 @@ points_team <- function(x){
 points_team("1")
 ```
 
+
 ```{r team visualization}
 #visualization of total points earned by each team in different seasons
 #using season 1 as an example
@@ -100,6 +120,7 @@ ggplot(points_team("1"),
     y = "Team",
     title = "Total Points Earned By Each Team")
 ```
+
 
 ```{r list of teamgroup}
 
@@ -115,6 +136,7 @@ points_teamgroup <- function(x){
 points_teamgroup("1")
 ```
 
+
 ```{r teamgroup visualization}
 #visualization of total points earned by each team groups in different seasons
 #using season 1 as an example
@@ -126,3 +148,5 @@ ggplot(points_teamgroup("1"),
     y = "Team Group",
     title = "Total Points Earned By Each Team Group")
 ```
+
+
