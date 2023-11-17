@@ -110,28 +110,33 @@ points_team("1")
 
 
 ```{r team visualization}
-#visualization of total points earned by each team in different seasons
-#using season 1 as an example
-ggplot(points_team("1"),
-       mapping = aes(y =  reorder(team, total_points), 
-                     x = total_points,
-                     fill=total_points)) +
-  geom_bar(stat = "identity") + 
+ggplot(points_team("1"), aes(x = reorder(team, total_points), 
+                               y = total_points, 
+                               fill = total_points)) +
+  geom_bar(stat = "identity") +
   geom_text(aes(label = total_points), 
             position = position_dodge(width = 0.9), 
             hjust = -0.1, 
             vjust = 0.25, 
-            size = 3) + 
+            size = 3) +
+  scale_fill_gradient(low = "skyblue", high = "purple") +  # Gradient color based on total points
   labs(
-    x = "Total Points", 
-    y = "Team",
-    title = "Total Points Earned By Each Team"
-  ) 
+    x = "Team", 
+    y = "Total Points",
+    title = "Total Points Earned By Each Team in Season 1"
+  ) +
+  theme_minimal() +  # A clean, minimal theme
+  theme(
+    plot.title = element_text(hjust = 0.5), # Center the title
+    axis.text.x = element_text(hjust = 1),  # Rotate x-axis labels for better readability
+    legend.title = element_blank() # Remove the legend title
+  ) +
+  coord_flip() # Flip the coordinates to make a horizontal bar plot
+
 ```
 
 
 ```{r list of teamgroup}
-
 points_teamgroup <- function(x){
   result <- 
   FERR %>%
