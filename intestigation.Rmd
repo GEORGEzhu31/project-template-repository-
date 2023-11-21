@@ -21,11 +21,14 @@ library(ggplot2)
 
 
 ```{r load-data}
+FERR0 <- read_csv("data/formula_e_race_results.csv")
+#the original dataset
 FERR <- read_csv("data/formula_e_race_results.csv") %>% 
   # Removing rows where points is 0
   filter(points != 0)
 problems()
 View(FERR)
+View(FERR0)
 ```
 
 
@@ -151,13 +154,29 @@ points_teamgroup("1")
 ```{r teamgroup visualization}
 #visualization of total points earned by each team groups in different seasons
 #using season 1 as an example
-ggplot(points_teamgroup("1"),
-       mapping = aes(y = reorder(team_group, total_points), x = total_points)) +
-  geom_bar(stat = "identity") + 
+
+ggplot(points_teamgroup("1"), aes(x = reorder(team_group, total_points), 
+                               y = total_points, 
+                               fill = total_points)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = total_points), 
+            position = position_dodge(width = 0.9), 
+            hjust = -0.1, 
+            vjust = 0.25, 
+            size = 3) +
+  scale_fill_gradient(low = "skyblue", high = "purple") +  # Gradient color based on total points
   labs(
-    x = "Total Points", 
-    y = "Team Group",
-    title = "Total Points Earned By Each Team Group")
+    x = "Team Groups", 
+    y = "Total Points",
+    title = "Total Points Earned By Each Team Groups in Season 1"
+  ) +
+  theme_minimal() +  # A clean, minimal theme
+  theme(
+    plot.title = element_text(hjust = 0.5), # Center the title
+    axis.text.x = element_text(hjust = 1),  # Rotate x-axis labels for better readability
+    legend.title = element_blank() # Remove the legend title
+  ) +
+  coord_flip() # Flip the coordinates to make a horizontal bar plot
 ```
 
 
