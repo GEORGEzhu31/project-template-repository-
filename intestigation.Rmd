@@ -212,7 +212,9 @@ driver_table <-
   table()
 driver_table
 as.data.frame.matrix(driver_table)
+```
 
+```{r}
 frequency_table <- FERR0 %>%
   mutate(across(everything(), as.character),
          `Season 1` = if_else(season == "1", 1, 0),
@@ -225,7 +227,5 @@ frequency_table <- FERR0 %>%
   group_by(driver) %>%
   summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
 View(frequency_table)
-
 ```
-
 
