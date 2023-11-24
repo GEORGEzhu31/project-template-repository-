@@ -17,6 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(tidymodels)
 ```
 
 
@@ -235,4 +236,14 @@ average_driver <- FERR0 %>%
 View(average_driver)
 
 freq_avg <- full_join(freq_driver, average_driver, by = "driver")
+multi_re_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(avg_points ~ Freq, data = freq_avg)
+glance(multi_re_fit)$r.squared
+multi_re_fit
+
+ggplot(data = freq_avg, aes(x = Freq, y = avg_points)) + 
+  geom_point() + 
+  geom_smooth(method = "lm",
+              se = FALSE)
 ```
