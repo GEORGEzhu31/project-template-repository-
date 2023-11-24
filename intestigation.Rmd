@@ -44,6 +44,27 @@ points_selected_driver("1", "Nelson Piquet Jr.")
 ```
 
 
+```{r summary of best drivers}
+# Calculate total points for each driver over each season
+driver_season_points <- FERR %>%
+  group_by(season, driver) %>%
+  summarise(total_points = sum(points), .groups = 'drop')
+
+# Find the driver with the best total points for each season
+best_drivers_by_season <- driver_season_points %>%
+  group_by(season) %>%
+  filter(total_points == max(total_points)) %>%
+  ungroup()
+
+# Display the summary table with the best drivers by season and their total points
+best_drivers_by_season_summary <- best_drivers_by_season %>%
+  select(season, driver, total_points)
+
+best_drivers_by_season_summary
+
+```
+
+
 ```{r list of driver}
 points_driver <- function(x){
   result <- 
@@ -54,12 +75,16 @@ points_driver <- function(x){
     arrange(desc(total_points))
   return(result)
 }
-points_driver("1")
+
+for(i in 1:7)
+  print (points_driver(i))
+
+
 ```
 
 
 ```{r driver visualization}
-ggplot(points_driver("1"), aes(x = reorder(driver, total_points), 
+ggplot(points_driver("2"), aes(x = reorder(driver, total_points), 
                                y = total_points, 
                                fill = total_points)) +
   geom_bar(stat = "identity") +
@@ -81,6 +106,7 @@ ggplot(points_driver("1"), aes(x = reorder(driver, total_points),
     legend.title = element_blank() # Remove the legend title
   ) +
   coord_flip() # Flip the coordinates to make a horizontal bar plot
+
 ```
 
 
@@ -106,7 +132,8 @@ points_team <- function(x){
     arrange(desc(total_points))
   return(result)
 }
-points_team("1")
+for(i in 1:7)
+  print (points_team(i))
 ```
 
 
@@ -147,7 +174,8 @@ points_teamgroup <- function(x){
     arrange(desc(total_points))
   return(result)
 }
-points_teamgroup("1")
+for(i in 1:7)
+  print (points_teamgroup(i))
 ```
 
 
