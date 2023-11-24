@@ -211,7 +211,7 @@ driver_table <-
   select(FERR, driver)  %>% 
   table()
 driver_table
-as.data.frame.matrix(driver_table)
+as.data.frame(driver_table)
 ```
 
 ```{r}
@@ -228,4 +228,28 @@ frequency_table <- FERR0 %>%
   summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
 View(frequency_table)
 ```
-
+driver_appearances <- FERR %>%
+  group_by(driver, season) %>%
+  summarize(appearances = n()) %>%
+  distinct()
+  drivers_less_than_three_races <- driver_appearances %>%
+  group_by(driver) %>%
+  filter(n() < 3) %>%
+  select(driver)
+  FERR_filtered <- FERR %>%
+  anti_join(drivers_less_than_three_races, by = "driver")
+  print(FERR_filtered   )
+  selected_season <- FERR_filtered %>% filter(season == "1")
+print(selected_season)
+selected_season_summary <- selected_season %>%
+  group_by(driver) %>%
+  mutate(
+    best_points = max(points),
+    worst_points = min(points)
+  )
+  selected_season_filtered <- selected_season_summary %>%
+  filter(points != best_points & points != worst_points)
+  average_points <- selected_season_filtered %>%
+  group_by(driver) %>%
+  summarize(avg_points = mean(points, na.rm = TRUE))
+print(average_points)
