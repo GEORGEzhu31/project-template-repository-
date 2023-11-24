@@ -207,15 +207,13 @@ ggplot(points_teamgroup("1"), aes(x = reorder(team_group, total_points),
   coord_flip() # Flip the coordinates to make a horizontal bar plot
 ```
 
-```
-
 ```{r}
 #frequency
 freq <- 
   select(FERR0, driver)  %>% 
   table()
 freq
-as.data.frame(freq)
+freq_driver <- as.data.frame(freq)
 #frequency in season
 freq_season <- FERR0 %>%
   mutate(across(everything(), as.character),
@@ -228,5 +226,11 @@ freq_season <- FERR0 %>%
          `Season 7` = if_else(season == "7", 1, 0)) %>%
   group_by(driver) %>%
   summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
-View(freq_season)
+#average
+selected_season <- FERR %>%
+  filter(season == "1") %>%
+  group_by(driver) %>%
+  summarize(avg_points = mean(points, na.rm = TRUE))
+
+print(selected_season)
 ```
