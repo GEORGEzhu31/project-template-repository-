@@ -212,8 +212,8 @@ ggplot(points_teamgroup("1"), aes(x = reorder(team_group, total_points),
 freq <- 
   select(FERR0, driver)  %>% 
   table()
-freq
 freq_driver <- as.data.frame(freq)
+View(freq_driver)
 #frequency in season
 freq_season <- FERR0 %>%
   mutate(across(everything(), as.character),
@@ -227,10 +227,12 @@ freq_season <- FERR0 %>%
   group_by(driver) %>%
   summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
 #average
-selected_season <- FERR %>%
-  filter(season == "1") %>%
+
+average_driver <- FERR0 %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
-print(selected_season)
+View(average_driver)
+
+freq_avg <- full_join(freq_driver, average_driver, by = "driver")
 ```
