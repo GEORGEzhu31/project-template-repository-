@@ -206,5 +206,26 @@ ggplot(points_teamgroup("1"), aes(x = reorder(team_group, total_points),
   ) +
   coord_flip() # Flip the coordinates to make a horizontal bar plot
 ```
+```{r}
+driver_table <- 
+  select(FERR, driver)  %>% 
+  table()
+driver_table
+as.data.frame.matrix(driver_table)
+
+frequency_table <- FERR0 %>%
+  mutate(across(everything(), as.character),
+         `Season 1` = if_else(season == "1", 1, 0),
+         `Season 2` = if_else(season == "2", 1, 0),
+         `Season 3` = if_else(season == "3", 1, 0),
+         `Season 4` = if_else(season == "4", 1, 0),
+         `Season 5` = if_else(season == "5", 1, 0),
+         `Season 6` = if_else(season == "6", 1, 0),
+         `Season 7` = if_else(season == "7", 1, 0)) %>%
+  group_by(driver) %>%
+  summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
+View(frequency_table)
+
+```
 
 
