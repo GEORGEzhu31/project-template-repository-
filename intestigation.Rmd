@@ -210,12 +210,13 @@ ggplot(points_teamgroup("1"), aes(x = reorder(team_group, total_points),
 ```
 
 ```{r}
+#frequency
 freq <- 
   select(FERR0, driver)  %>% 
   table()
 freq
 as.data.frame(freq)
-
+#frequency in season
 freq_season <- FERR0 %>%
   mutate(across(everything(), as.character),
          `Season 1` = if_else(season == "1", 1, 0),
