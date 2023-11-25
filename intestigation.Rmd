@@ -102,16 +102,18 @@ ggplot(points_driver("2"), aes(x = reorder(driver, total_points),
 ```{r}
 #frequency
 freq <- 
-  select(FERR0, driver)  %>% 
+  filter(FERR0, season != "7") %>%
+  select(driver)  %>% 
   table()
 freq_driver <- as.data.frame(freq)
 View(freq_driver)
 
+
 #filter the frequency 
 
 freq_driver2 <-
-  freq_driver %>% filter (freq >= 3)
-View(freq_driver2)
+  freq_driver %>% filter (freq >= "3")
+
 
 #frequency in season
 freq_season <- FERR0 %>%
@@ -125,30 +127,48 @@ freq_season <- FERR0 %>%
          `Season 7` = if_else(season == "7", 1, 0)) %>%
   group_by(driver) %>%
   summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
-#average
 
+#average
 average_driver <- FERR0 %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
-
-View(average_driver)
+#average after filter season7 out
+average_driver2 <-
+  filter(FERR0, season != 7 ) %>%
+  group_by(driver) %>%
+  summarize(avg_points = mean(points, na.rm = TRUE))
 
 freq_avg <- full_join(freq_driver, average_driver, by = "driver")
 freq_avg2 <- left_join(freq_driver2, average_driver, by = "driver")
+freq_avg3 <- left_join(freq_driver2, average_driver2, by = "driver")
+
 #linear regression original model
 multi_re_fit <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg)
+
 #r squared model 1
 glance(multi_re_fit)$r.squared
 multi_re_fit
-#linear regression after filter
+
+#linear regression after filter freq >= 3
 multi_re_fit2 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg2)
+
 #r squared model2, indicating an improvement
 glance(multi_re_fit2)$r.squared
 multi_re_fit2
+
+#linear regression filter freq >= 3 and season != 7
+multi_re_fit3 <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(avg_points ~ Freq, data = freq_avg3)
+multi_re_fit3
+
+#r squared model3
+glance(multi_re_fit3)$r.squared
+multi_re_fit3
 #visualize model1
 model1 <- ggplot(data = freq_avg, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -162,4 +182,11 @@ model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) +
   geom_smooth(method = "lm",
               se = FALSE)
 model2
+
+#visualize model3
+model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) + 
+  geom_point() + 
+  geom_smooth(method = "lm",
+              se = FALSE)
+
 ```
