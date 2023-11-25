@@ -33,18 +33,6 @@ View(FERR0)
 ```
 
 
-```{r selected driver}
-#total points of selected driver in specific season
-points_selected_driver <- function(x, y) {
-  result <- FERR %>%
-    filter(x == season, y == driver) %>% 
-    summarise(TotalPoints = sum(points, na.rm = TRUE))
-  return(result)
-}
-points_selected_driver("1", "Nelson Piquet Jr.")
-```
-
-
 ```{r summary of best drivers}
 # Calculate total points for each driver over each season
 driver_season_points <- FERR %>%
@@ -118,6 +106,13 @@ freq <-
   table()
 freq_driver <- as.data.frame(freq)
 View(freq_driver)
+
+#filter the frequency 
+
+freq_driver2 <-
+  freq_driver %>% filter (freq >= 3)
+View(freq_driver2)
+
 #frequency in season
 freq_season <- FERR0 %>%
   mutate(across(everything(), as.character),
@@ -139,14 +134,32 @@ average_driver <- FERR0 %>%
 View(average_driver)
 
 freq_avg <- full_join(freq_driver, average_driver, by = "driver")
+freq_avg2 <- left_join(freq_driver2, average_driver, by = "driver")
+#linear regression original model
 multi_re_fit <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg)
+#r squared model 1
 glance(multi_re_fit)$r.squared
 multi_re_fit
-
-ggplot(data = freq_avg, aes(x = Freq, y = avg_points)) + 
+#linear regression after filter
+multi_re_fit2 <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(avg_points ~ Freq, data = freq_avg2)
+#r squared model2, indicating an improvement
+glance(multi_re_fit2)$r.squared
+multi_re_fit2
+#visualize model1
+model1 <- ggplot(data = freq_avg, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
   geom_smooth(method = "lm",
               se = FALSE)
+model1
+
+#visualize model2
+model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
+  geom_point() + 
+  geom_smooth(method = "lm",
+              se = FALSE)
+model2
 ```
