@@ -88,85 +88,43 @@ r_squared_3 <- summary_3$r.squared
 r_squared_3
 ```
 
-```{r}
-season_1_long <- pivot_longer(season_1_data, 
-                                cols = c(total_points, average_points), 
-                                names_to = "variable", 
-                                values_to = "value")
-ggplot(season_1_long, aes(x = variable, y = value, fill = variable)) +
-  geom_boxplot() +
-  labs(title = "Boxplot of Season One Statistics",
-       x = "Variable",
-       y = "Value") +
-  theme_minimal()
-```
+```{r model}
+#frequency
+freq <- 
+  select(FERR0, driver)  %>% 
+  table()
+freq_driver <- as.data.frame(freq)
+#frequency in season
+freq_season <- FERR0 %>%
+  mutate(across(everything(), as.character),
+         `Season 1` = if_else(season == "1", 1, 0),
+         `Season 2` = if_else(season == "2", 1, 0),
+         `Season 3` = if_else(season == "3", 1, 0),
+         `Season 4` = if_else(season == "4", 1, 0),
+         `Season 5` = if_else(season == "5", 1, 0),
+         `Season 6` = if_else(season == "6", 1, 0),
+         `Season 7` = if_else(season == "7", 1, 0)) %>%
+  group_by(driver) %>%
+  summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
+#average
 
-```{r}
-freq_season_1 <- FERR %>%
-  filter(season == "1") %>%
-  select(driver) %>%
-  table() %>%
-  as.data.frame()
-  View(freq_season_1)
-  
-  freq_season_2 <- FERR %>%
-  filter(season == "2") %>%
-  select(driver) %>%
-  table() %>%
-  as.data.frame()
-  View(freq_season_2)
-  
-  freq_season_3 <- FERR %>%
-  filter(season == "3") %>%
-  select(driver) %>%
-  table() %>%
-  as.data.frame()
-  View(freq_season_3)
-  
-  freq_season_4 <- FERR %>%
-  filter(season == "4") %>%
-  select(driver) %>%
-  table() %>%
-  as.data.frame()
-  View(freq_season_4)
-  
-  freq_season_5 <- FERR %>%
-  filter(season == "5") %>%
-  select(driver) %>%
-  table() %>%
-  as.data.frame()
-  View(freq_season_5)
-  
-  freq_season_6 <- FERR %>%
-  filter(season == "6") %>%
-  select(driver) %>%
-  table() %>%
-  as.data.frame()
-  View(freq_season_6)
-  
-  
- selected_season <- FERR %>%
-  filter(season == "1") %>%
+average_driver <- FERR0 %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
-print(selected_season) 
+freq_avg <- full_join(freq_driver, average_driver, by = "driver")
+multi_re_fit <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(avg_points ~ Freq, data = freq_avg)
+glance(multi_re_fit)$r.squared
+multi_re_fit
 
-selected_season_with_freq <- merge(selected_season, freq_season_1, by = "driver", all.x = TRUE)
-selected_season_with_freq$driver <- reorder(selected_season_with_freq$driver,
-selected_season_with_freq$avg_points, FUN = function(x) -x)
-
-
-
-
-ggplot(selected_season_with_freq, aes(x = driver, y = avg_points)) +
-  geom_bar(stat = "identity", fill = "skyblue") +
-  labs(
-    x = "Driver",
-    y = "Average Points",
-    title = "Average Points per Driver in Season 1"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
-  scale_x_discrete(labels = function(x) paste(x, " (Freq:", selected_season_with_freq$Freq[match(x, selected_season_with_freq$driver)], ")"))
+ggplot(data = freq_avg, aes(x = Freq, y = avg_points)) + 
+  geom_point() + 
+  labs(title = "All Seasons",
+       x = "Frequency",
+       y = "Average Points") +
+  geom_smooth(method = "lm",
+              se = FALSE)
 ```
+
