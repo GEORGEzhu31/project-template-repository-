@@ -51,6 +51,28 @@ best_drivers_by_season_summary <- best_drivers_by_season %>%
 
 best_drivers_by_season_summary
 
+#visualization
+ggplot(best_drivers_by_season_summary, aes(x = reorder(season, total_points), 
+                               y = total_points, 
+                               fill = total_points)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  geom_text(aes(label = total_points), 
+            position = position_dodge(width = 0.5), 
+            hjust = -0.1, 
+            vjust = 0.25, 
+            size = 3) +
+  labs(
+    x = "Season", 
+    y = "Total Points",
+    title = "the driver with the best total points for each season"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    axis.text.x = element_text(hjust = 1),  
+    legend.title = element_blank() 
+  ) +
+  coord_flip()
 ```
 
 
