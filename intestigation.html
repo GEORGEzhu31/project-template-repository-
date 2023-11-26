@@ -370,23 +370,6 @@ project.</p>
 library(dplyr)
 library(ggplot2)
 library(tidymodels)</code></pre>
-<pre class="r"><code>FERR0 &lt;- read_csv(&quot;data/formula_e_race_results.csv&quot;) %&gt;%
-  select(season, race_num, driver, points)</code></pre>
-<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details,
-## e.g.:
-##   dat &lt;- vroom(...)
-##   problems(dat)</code></pre>
-<pre><code>## Rows: 1480 Columns: 17
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (7): race_name, driver, team, team_group, rank, grid, time_retired
-## dbl  (9): season, race_num, car, rank_num, laps, pts_rank, pts_pole, pts_bon...
-## date (1): race_date
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>FERR &lt;- FERR0 %&gt;% 
-  filter(points != 0)</code></pre>
 <pre class="r"><code>best_drivers_summary &lt;- FERR %&gt;%
   group_by(season, driver) %&gt;%
   summarise(total_points = sum(points), .groups = &#39;drop&#39;) %&gt;%
