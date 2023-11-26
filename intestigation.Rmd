@@ -100,93 +100,71 @@ ggplot(points_driver("2"), aes(x = reorder(driver, total_points),
 
 
 ```{r}
-#frequency
-freq <- 
-  filter(FERR0, season != "7") %>%
-  select(driver)  %>% 
-  table()
-freq_driver <- as.data.frame(freq)
-View(freq_driver)
-
-
-#filter the frequency 
-
-freq_driver2 <-
-  freq_driver %>% filter (freq >= "3")
-
-
-#frequency in season
-freq_season <- FERR0 %>%
-  mutate(across(everything(), as.character),
-         `Season 1` = if_else(season == "1", 1, 0),
-         `Season 2` = if_else(season == "2", 1, 0),
-         `Season 3` = if_else(season == "3", 1, 0),
-         `Season 4` = if_else(season == "4", 1, 0),
-         `Season 5` = if_else(season == "5", 1, 0),
-         `Season 6` = if_else(season == "6", 1, 0),
-         `Season 7` = if_else(season == "7", 1, 0)) %>%
-  group_by(driver) %>%
-  summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
-
-#average
-average_driver <- FERR0 %>%
+freq_season_1 <- FERR %>%
+  filter(season == "1") %>%
+  select(driver) %>%
+  table() %>%
+  as.data.frame()
+  View(freq_season_1)
+  
+  freq_season_2 <- FERR %>%
+  filter(season == "2") %>%
+  select(driver) %>%
+  table() %>%
+  as.data.frame()
+  View(freq_season_2)
+  
+  freq_season_3 <- FERR %>%
+  filter(season == "3") %>%
+  select(driver) %>%
+  table() %>%
+  as.data.frame()
+  View(freq_season_3)
+  
+  freq_season_4 <- FERR %>%
+  filter(season == "4") %>%
+  select(driver) %>%
+  table() %>%
+  as.data.frame()
+  View(freq_season_4)
+  
+  freq_season_5 <- FERR %>%
+  filter(season == "5") %>%
+  select(driver) %>%
+  table() %>%
+  as.data.frame()
+  View(freq_season_5)
+  
+  freq_season_6 <- FERR %>%
+  filter(season == "6") %>%
+  select(driver) %>%
+  table() %>%
+  as.data.frame()
+  View(freq_season_6)
+  
+  
+ selected_season <- FERR %>%
+  filter(season == "1") %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
-#average after filter season7 out
-average_driver2 <-
-  filter(FERR0, season != 7 ) %>%
-  group_by(driver) %>%
-  summarize(avg_points = mean(points, na.rm = TRUE))
 
-freq_avg <- full_join(freq_driver, average_driver, by = "driver")
-freq_avg2 <- left_join(freq_driver2, average_driver, by = "driver")
-freq_avg3 <- left_join(freq_driver2, average_driver2, by = "driver")
+print(selected_season) 
 
-#linear regression original model
-multi_re_fit <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(avg_points ~ Freq, data = freq_avg)
+selected_season_with_freq <- merge(selected_season, freq_season_1, by = "driver", all.x = TRUE)
+selected_season_with_freq$driver <- reorder(selected_season_with_freq$driver,
+selected_season_with_freq$avg_points, FUN = function(x) -x)
 
-#r squared model 1
-glance(multi_re_fit)$r.squared
-multi_re_fit
 
-#linear regression after filter freq >= 3
-multi_re_fit2 <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(avg_points ~ Freq, data = freq_avg2)
 
-#r squared model2, indicating an improvement
-glance(multi_re_fit2)$r.squared
-multi_re_fit2
 
-#linear regression filter freq >= 3 and season != 7
-multi_re_fit3 <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(avg_points ~ Freq, data = freq_avg3)
-multi_re_fit3
-
-#r squared model3
-glance(multi_re_fit3)$r.squared
-multi_re_fit3
-#visualize model1
-model1 <- ggplot(data = freq_avg, aes(x = Freq, y = avg_points)) + 
-  geom_point() + 
-  geom_smooth(method = "lm",
-              se = FALSE)
-model1
-
-#visualize model2
-model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
-  geom_point() + 
-  geom_smooth(method = "lm",
-              se = FALSE)
-model2
-
-#visualize model3
-model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) + 
-  geom_point() + 
-  geom_smooth(method = "lm",
-              se = FALSE)
-
+ggplot(selected_season_with_freq, aes(x = driver, y = avg_points)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(
+    x = "Driver",
+    y = "Average Points",
+    title = "Average Points per Driver in Season 1"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_x_discrete(labels = function(x) paste(x, " (Freq:", selected_season_with_freq$Freq[match(x, selected_season_with_freq$driver)], ")"))
 ```
