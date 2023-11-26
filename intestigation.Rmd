@@ -22,104 +22,86 @@ library(tidymodels)
 
 
 ```{r load-data}
-FERR0 <- read_csv("data/formula_e_race_results.csv")
-#the original dataset
-FERR <- read_csv("data/formula_e_race_results.csv") %>% 
-  # Removing rows where points is 0
+FERR0 <- read_csv("data/formula_e_race_results.csv") %>%
+  select(season, race_num, driver, points)
+FERR <- FERR0 %>% 
   filter(points != 0)
-problems()
-View(FERR)
-View(FERR0)
 ```
 
-
-```{r summary of best drivers}
-# Calculate total points for each driver over each season
-driver_season_points <- FERR %>%
+```{r best_drivers_summary}
+best_drivers_summary <- FERR %>%
   group_by(season, driver) %>%
-  summarise(total_points = sum(points), .groups = 'drop')
-
-# Find the driver with the best total points for each season
-best_drivers_by_season <- driver_season_points %>%
+  summarise(total_points = sum(points), .groups = 'drop') %>%
   group_by(season) %>%
-  filter(total_points == max(total_points)) %>%
-  ungroup()
-
-# Display the summary table with the best drivers by season and their total points
-best_drivers_by_season_summary <- best_drivers_by_season %>%
+  slice_max(order_by = total_points, n = 1) %>%
+  ungroup() %>%
   select(season, driver, total_points)
-
-best_drivers_by_season_summary
-
-#visualization
-ggplot(best_drivers_by_season_summary, aes(x = reorder(season, total_points), 
-                               y = total_points, 
-                               fill = total_points)) +
-  geom_bar(stat = "identity", fill = "skyblue") +
-  geom_text(aes(label = total_points), 
-            position = position_dodge(width = 0.5), 
-            hjust = -0.1, 
-            vjust = 0.25, 
-            size = 3) +
-  labs(
-    x = "Season", 
-    y = "Total Points",
-    title = "the driver with the best total points for each season"
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5), 
-    axis.text.x = element_text(hjust = 1),  
-    legend.title = element_blank() 
-  ) +
-  coord_flip()
+best_drivers_summary
 ```
 
 
-```{r list of driver}
-points_driver <- function(x){
-  result <- 
-  FERR %>%
-    filter(x == season) %>%
-    group_by(driver) %>%
-    summarise(total_points = sum(points, na.rm = TRUE)) %>%
-    arrange(desc(total_points))
-  return(result)
-}
-
-for(i in 1:7)
-  print (points_driver(i))
-
-
+```{r season_1_data(example)}
+season_1 <- FERR0 %>%
+  filter(season == 1)
+season_1_data <- season_1 %>%
+  group_by(driver) %>%
+  summarise(
+    total_points = sum(points),
+    average_points = mean(points),
+    frequency = n()
+    ) %>%
+  arrange(desc(total_points)) 
+season_1_data
 ```
 
+```{r season_1_vidualisation(total_points, average_points, frequency)}
+ggplot(season_1_data, aes(x = average_points, y = total_points)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "blue") +
+  labs(title = "Total Points vs Average Points",
+       x = "Average Points",
+       y = "Total Points")
 
-```{r driver visualization}
-ggplot(points_driver("2"), aes(x = reorder(driver, total_points), 
-                               y = total_points, 
-                               fill = total_points)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = total_points), 
-            position = position_dodge(width = 0.9), 
-            hjust = -0.1, 
-            vjust = 0.25, 
-            size = 3) +
-  scale_fill_gradient(low = "skyblue", high = "purple") +  # Gradient color based on total points
-  labs(
-    x = "Driver", 
-    y = "Total Points",
-    title = "Total Points Earned By Each Driver in Season 1"
-  ) +
-  theme_minimal() +  # A clean, minimal theme
-  theme(
-    plot.title = element_text(hjust = 0.5), # Center the title
-    axis.text.x = element_text(hjust = 1),  # Rotate x-axis labels for better readability
-    legend.title = element_blank() # Remove the legend title
-  ) +
-  coord_flip() # Flip the coordinates to make a horizontal bar plot
+ggplot(season_1_data, aes(x = frequency, y = total_points)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "blue") +
+  labs(title = "Total Points vs Frequency",
+       x = "Frequency",
+       y = "Total Points")
 
+ggplot(season_1_data, aes(x = frequency, y = average_points)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "blue") +
+  labs(title = "Average Points vs Frequency",
+       x = "Frequency",
+       y = "Average Points")
+
+mod_1 <- lm(total_points ~ average_points, data = season_1_data)
+summary_1 <- summary(mod_1)
+r_squared_1 <- summary_1$r.squared
+r_squared_1
+mod_2 <- lm(total_points ~ frequency, data = season_1_data)
+summary_2 <- summary(mod_2)
+r_squared_2 <- summary_2$r.squared
+r_squared_2
+mod_3 <- lm(average_points ~ frequency, data = season_1_data)
+summary_3 <- summary(mod_3)
+r_squared_3 <- summary_3$r.squared
+r_squared_3
 ```
 
+```{r}
+season_1_long <- pivot_longer(season_1_data, 
+                                cols = c(total_points, average_points), 
+                                names_to = "variable", 
+                                values_to = "value")
+ggplot(season_1_long, aes(x = variable, y = value, fill = variable)) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Season One Statistics",
+       x = "Variable",
+       y = "Value") +
+  theme_minimal()
+```
 
 ```{r}
 freq_season_1 <- FERR %>%
