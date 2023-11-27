@@ -63,6 +63,7 @@ best_drivers_summary
 include_graphics("img/champions.png")
 ```
 
+
 2.
 "The report focuses on the 2nd season, identified as the most representative. New variables 'frequency' (number of races participated) and 'average_points' are added, as detailed in the list below."
 
@@ -79,20 +80,14 @@ season_2_data <- season_2 %>%
   arrange(desc(total_points)) 
 season_2_data
 ```
-
+## 插入模型，介绍labels
 
 ## Findings
-Background and Target:
-
-Research methods and Assumptions:
-
 Outcomes:(clean & tidy data, graphs and tables)
 
 Analysis:
 
 Evaluation and Limitations:
-
-Conclusion:
 
 
 ## References
