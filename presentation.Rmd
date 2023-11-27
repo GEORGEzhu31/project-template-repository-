@@ -79,7 +79,7 @@ best_drivers_summary <- FERR %>%
   slice_max(order_by = total_points, n = 1) %>%
   ungroup() %>%
   select(season, driver, total_points)
-kable(head(best_drivers_summary), format = "html")
+best_drivers_summary
 ```
 
 ---
