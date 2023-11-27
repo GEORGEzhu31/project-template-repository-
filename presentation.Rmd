@@ -179,7 +179,7 @@ Or you can also include a full page image. See next slide.
 
 
 class: inverse, center, middle
-background-image: url(img/edinburgh-castle.jpg)
+background-image: url(img/FE.jpg)
 background-size: contain
 ---
 
