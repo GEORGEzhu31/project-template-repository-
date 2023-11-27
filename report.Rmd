@@ -14,15 +14,22 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r load-lib, include = FALSE}
 library(tidyverse)
 library(dplyr)
+library(ggplot2)
+library(tidymodels)
+library(knitr)
+
 
 ```
-
 
 ```{r load-data, include=FALSE}
-# load your data here and any pre-processing/cleaning 
-#  that you need for your report.
-
+FERR0 <- read_csv("data/formula_e_race_results.csv") %>%
+  select(season, race_num, driver, points)
+FERR <- FERR0 %>% 
+  filter(points != 0)
 ```
+
+
+
 
 
 ## Research Question
@@ -31,7 +38,46 @@ In the “Formula E Championship Predictions" research, we mainly explore and pr
 The Formula E racing championship is notoriously unpredictable due to differences between drivers, cars, formats，venues and so on. This sparked our interest in finding drivers or teams that are absolutely dominant, allowing us to ignore potential disadvantages and unfairness in the competition during our research.
 
 
+## Methods
+1.the defination of the terminologies in the data set
+
+"The initial step involved labeling the data as FERR0 and FERR. FERR0 retained four variables from the original dataset: 'season' (the nth racing season), 'race_num' (the mth race), 'driver' (the name of the driver), and 'points' (the total points for the mth race). FERR, on the other hand, was derived from FERR0 by filtering out all rows where the 'points' were zero."
+
+
 ## Data
+1 list
+
+"According to Fiaformulae, the champion of the Formula E Championship is determined by the driver with the highest cumulative points in the season. The following chart lists the drivers with the highest total points across seven seasons, comparing this data with the champion information provided by Formulaechronicles."
+```{r, echo=FALSE}
+best_drivers_summary <- FERR %>%
+  group_by(season, driver) %>%
+  summarise(total_points = sum(points), .groups = 'drop') %>%
+  group_by(season) %>%
+  slice_max(order_by = total_points, n = 1) %>%
+  ungroup() %>%
+  select(season, driver, total_points)
+best_drivers_summary
+```
+```{r, echo=FALSE}
+include_graphics("img/champions.png")
+```
+
+2.
+"The report focuses on the 2nd season, identified as the most representative. New variables 'frequency' (number of races participated) and 'average_points' are added, as detailed in the list below."
+
+```{r season_2_data(example), echo=FALSE}
+season_2 <- FERR0 %>%
+  filter(season == 2)
+season_2_data <- season_2 %>%
+  group_by(driver) %>%
+  summarise(
+    total_points = sum(points),
+    average_points = mean(points),
+    frequency = n()
+    ) %>%
+  arrange(desc(total_points)) 
+season_2_data
+```
 
 
 ## Findings
