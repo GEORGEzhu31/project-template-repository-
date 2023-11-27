@@ -110,13 +110,14 @@ glance(multi_re_fit1)$r.squared
 
 multi_re_fit1
 
-ggplot(data = freq_avg1, aes(x = Freq, y = avg_points)) + 
+model1 <- ggplot(data = freq_avg1, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
   labs(title = "All Seasons",
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
               se = FALSE)
+model1
 
 #model 2, 3, 4
 
