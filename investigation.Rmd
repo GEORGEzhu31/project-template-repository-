@@ -55,21 +55,21 @@ season_1_data
 ```{r season_1_vidualisation(total_points, average_points, frequency)}
 ggplot(season_1_data, aes(x = average_points, y = total_points)) +
   geom_point() +
-  geom_smooth(method = "lm", color = "blue") +
+  geom_smooth(method = "lm", color = "blue", se = FALSE) +
   labs(title = "Total Points vs Average Points",
        x = "Average Points",
        y = "Total Points")
 
 ggplot(season_1_data, aes(x = frequency, y = total_points)) +
   geom_point() +
-  geom_smooth(method = "lm", color = "blue") +
+  geom_smooth(method = "lm", color = "blue", se = FALSE) +
   labs(title = "Total Points vs Frequency",
        x = "Frequency",
        y = "Total Points")
 
 ggplot(season_1_data, aes(x = frequency, y = average_points)) +
   geom_point() +
-  geom_smooth(method = "lm", color = "blue") +
+  geom_smooth(method = "lm", color = "blue", se = FALSE) +
   labs(title = "Average Points vs Frequency",
        x = "Frequency",
        y = "Average Points")
@@ -93,117 +93,92 @@ r_squared_3
 freq <- 
   select(FERR0, driver)  %>% 
   table()
-freq_driver <- as.data.frame(freq)
-#frequency in season
-freq_season <- FERR0 %>%
-  mutate(across(everything(), as.character),
-         `Season 1` = if_else(season == "1", 1, 0),
-         `Season 2` = if_else(season == "2", 1, 0),
-         `Season 3` = if_else(season == "3", 1, 0),
-         `Season 4` = if_else(season == "4", 1, 0),
-         `Season 5` = if_else(season == "5", 1, 0),
-         `Season 6` = if_else(season == "6", 1, 0),
-         `Season 7` = if_else(season == "7", 1, 0)) %>%
-  group_by(driver) %>%
-  summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
+freq_driver1 <- as.data.frame(freq)
+
 #average
 
-average_driver <- FERR0 %>%
+avg_driver1 <- FERR0 %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
-freq_avg <- full_join(freq_driver, average_driver, by = "driver")
-multi_re_fit <- linear_reg() %>%
+freq_avg1 <- full_join(freq_driver1, avg_driver1, by = "driver")
+multi_re_fit1 <- linear_reg() %>%
   set_engine("lm") %>%
-  fit(avg_points ~ Freq, data = freq_avg)
-glance(multi_re_fit)$r.squared
-multi_re_fit
+  fit(avg_points ~ Freq, data = freq_avg1)
+#r squared of original model
+glance(multi_re_fit1)$r.squared
 
-ggplot(data = freq_avg, aes(x = Freq, y = avg_points)) + 
+multi_re_fit1
+
+ggplot(data = freq_avg1, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
   labs(title = "All Seasons",
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
               se = FALSE)
-```
-```{r }
-#frequency
+
+#model 2, 3, 4
+
+#freq filters season != 7 
 freq <- 
   filter(FERR0, season != "7") %>%
   select(driver)  %>% 
   table()
-freq_driver <- as.data.frame(freq)
-View(freq_driver)
+freq_driver2 <- as.data.frame(freq)
 
+#freq filters freq >= 3
+freq_driver3 <-
+  freq_driver1 %>% filter (Freq >= 3)
 
-#filter the frequency 
+#freq filters season != 7 and freq >= 3
+freq_driver4 <-
+  freq_driver2 %>% filter (Freq >= 3)
 
-freq_driver2 <-
-  freq_driver %>% filter (freq >= "3")
-
-
-#frequency in season
-freq_season <- FERR0 %>%
-  mutate(across(everything(), as.character),
-         `Season 1` = if_else(season == "1", 1, 0),
-         `Season 2` = if_else(season == "2", 1, 0),
-         `Season 3` = if_else(season == "3", 1, 0),
-         `Season 4` = if_else(season == "4", 1, 0),
-         `Season 5` = if_else(season == "5", 1, 0),
-         `Season 6` = if_else(season == "6", 1, 0),
-         `Season 7` = if_else(season == "7", 1, 0)) %>%
-  group_by(driver) %>%
-  summarise(across(`Season 1`:`Season 7`, sum, na.rm = TRUE))
-
-#average
-average_driver <- FERR0 %>%
-  group_by(driver) %>%
-  summarize(avg_points = mean(points, na.rm = TRUE))
-#average after filter season7 out
-average_driver2 <-
+#average filters season != 7
+avg_driver2 <-
   filter(FERR0, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
-freq_avg <- full_join(freq_driver, average_driver, by = "driver")
-freq_avg2 <- left_join(freq_driver2, average_driver, by = "driver")
-freq_avg3 <- left_join(freq_driver2, average_driver2, by = "driver")
 
-#linear regression original model
-multi_re_fit <- linear_reg() %>%
-  set_engine("lm") %>%
-  fit(avg_points ~ Freq, data = freq_avg)
-
-#r squared model 1
-glance(multi_re_fit)$r.squared
-multi_re_fit
+#filters season != 7
+freq_avg2 <- left_join(freq_driver2, avg_driver2, by = "driver")
+#filters freq >= 3
+freq_avg3 <- left_join(freq_driver3, avg_driver1, by = "driver")
+#filters freq >= 3 and season != 7
+freq_avg4 <- left_join(freq_driver4, avg_driver2, by = "driver")
 
 
-#linear regression after filter freq >= 3
+#fit model 2
 multi_re_fit2 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg2)
 
 #r squared model2, indicating an improvement
 glance(multi_re_fit2)$r.squared
+
 multi_re_fit2
 
-#linear regression filter freq >= 3 and season != 7
+#fit model 3
 multi_re_fit3 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg3)
-multi_re_fit3
 
 #r squared model3
 glance(multi_re_fit3)$r.squared
+
 multi_re_fit3
-#visualize model1
-model1 <- ggplot(data = freq_avg, aes(x = Freq, y = avg_points)) + 
-  geom_point() + 
-  geom_smooth(method = "lm",
-              se = FALSE)
-model1
+
+#fit model 4
+multi_re_fit4 <- linear_reg() %>%
+  set_engine("lm") %>%
+  fit(avg_points ~ Freq, data = freq_avg4)
+
+#r squared model2, indicating an improvement
+glance(multi_re_fit4)$r.squared
+
+multi_re_fit4
 
 #visualize model2
 model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
@@ -217,5 +192,12 @@ model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) +
   geom_point() + 
   geom_smooth(method = "lm",
               se = FALSE)
+model3
 
+#visualize model 4
+model4 <- ggplot(data = freq_avg4, aes(x = Freq, y = avg_points)) + 
+  geom_point() + 
+  geom_smooth(method = "lm",
+              se = FALSE)
+model4
 ```
