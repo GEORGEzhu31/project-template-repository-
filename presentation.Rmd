@@ -1,7 +1,7 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+title: "Formula E Championship Predictions"
+subtitle: "!!!!!!!!"
+author: "Fighting Wolves <br> George Zhu  Jiayi Wan Wanfang Zhen  Yifu Li & Yunrui Lyu"
 institute: "University of Edinburgh"
 date: "`r Sys.Date()`"
 output:
@@ -40,6 +40,10 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 
 ```{r load-data, include=FALSE}
 # Load your data here
+FERR0 <- read_csv("data/formula_e_race_results.csv") %>%
+  select(season, race_num, driver, points)
+FERR <- FERR0 %>% 
+  filter(points != 0)
 ```
 
 ```{r include=FALSE}
@@ -170,7 +174,7 @@ kable(head(iris), format = "html")
 # Images
 
 ```{r castle, echo = FALSE, out.width = "55%", fig.align = "center", fig.cap = "Image credit: Photo by Jörg Angeli on Unsplash."}
-include_graphics("img/edinburgh-castle.jpg")
+include_graphics("img/FE.jpg")
 ```
 
 Or you can also include a full page image. See next slide.
@@ -179,7 +183,7 @@ Or you can also include a full page image. See next slide.
 
 
 class: inverse, center, middle
-background-image: url(img/edinburgh-castle.jpg)
+background-image: url(img/FE.jpg)
 background-size: contain
 ---
 
