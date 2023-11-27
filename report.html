@@ -386,6 +386,53 @@ racing season), ‘race_num’ (the mth race), ‘driver’ (the name of the
 driver), and ‘points’ (the total points for the mth race). FERR, on the
 other hand, was derived from FERR0 by filtering out all rows where the
 ‘points’ were zero.”</p>
+<p>The investigation process utilises packages tidyverse, tidymodels and
+ggplot2.</p>
+<p>In the cleaning stage, functions select(), slice(), filter(),
+summarize() are used the most to manipulate and transform the original
+data into a tidy format. They also help merging information needed such
+as average points. As resulting, dataframes containing driver, total
+points, average points and frequency based on FERR0 are created to
+support further work.</p>
+<p>After obtaining the required data, linear regression is plotted
+between different variables to observe any potential relationship. This
+step is completed by using ggplot(). aes(x = Freq, y = avg_points).
+Function geom_point() implies a point diagram and geom_smooth(method =
+“lm”, se = FALSE) provides the linear regression line and removes the
+shadow around it. By observing the visualizations, there could be some
+preliminary inspiration about the prediction.</p>
+<p>Based on the insights obtained from the previous stage, a more
+detailed investigation on the relationship between average total points
+and frequency (of attending races) has been carried out. Average total
+point refers to the average points each driver earns throughout races
+they attended, which largely reflects the racing level of these drivers.
+Frequency, on the other hand, indicates the number of competitions the
+drivers have participated in, which is correlated to the experience of
+these drivers.</p>
+<p>An initial model (model1) is plotted using linear_reg(), sets engine
+as “lm”. Then the command fit() is piped, providing name of the data and
+relationship avg_points ~ Freq. By taking a look at outcome of the
+model, the estimate intercept and correlation between the pair of
+variables can be found.</p>
+<p>The original model is visualized by ggplot(). The function
+geom_point() tells R which type of diagram should be plotted.
+geom_smooth() provides visualization of the linear regression line as
+well. To improve the readability and aesthetics of the diagram, labs()
+is added as a layer, allowing the information to be presented
+clearly.</p>
+<p>Three models (model2/3/4) are derived from the original version. They
+respectively filters “season != 7”, “Freq &gt;= 3”, “season != 7” and
+“Freq &gt;= 3”, supporting by derived dataframes, where filter(),
+group_by(), summarize() are applied to extract the needed information to
+satisfy various conditions. All the four models are evaluated by the r
+squared using the function glance()$r.squared. The closer the r squared
+value is to 1, the stronger the correlation between the x-y variables
+is.</p>
+<p>The visualization stage of derived model is similarly to the previous
+procedure. ggplot() completes the work. Point diagrams are plotted by
+geom_point(). geom_smooth(method = “lm”, se = FALSE) is there to
+visualize the linear regression line. labs() layer is added as well to
+improve the presentation of the diagrams.</p>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
