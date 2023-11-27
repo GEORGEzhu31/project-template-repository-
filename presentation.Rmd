@@ -1,7 +1,7 @@
 ---
 title: "Formula E Championship Predictions"
 subtitle: "!!!!!!!!"
-author: "Fighting Wolves <br> George Zhu  Jiayi Wan Wanfang Zhen  Yifu Li & Yunrui Lyu"
+author: "Fighting Wolves <br> George Zhu、Jiayi Wan、Wanfang Zhen、Yifu Li & Yunrui Lyu"
 institute: "University of Edinburgh"
 date: "`r Sys.Date()`"
 output:
@@ -31,6 +31,7 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
+style_duo(primary_color = "#1F4257", secondary_color = "#F97B64")
 ```
 
 ```{r setup, include=FALSE}
@@ -46,23 +47,40 @@ FERR <- FERR0 %>%
   filter(points != 0)
 ```
 
-```{r include=FALSE}
-
-#Background image
-style_xaringan(
-  title_slide_background_image = "img/confetti.jpg"
-)
-```
-
 class: center, middle
 
-## A statement of the overall goal / research question
+## Who has won the game in the last few years, and what factors influenced their performance.
 
 ---
 
 class: inverse, center, middle
 
-# Section title
+#Champion?Champion!
+
+---
+
+# How to win the championship in E-Formula?
+
+- The driver with the most points is the driver's champion.
+
+- The team with the most team points* out of the 10 teams is the team champion.
+
+.footnote[[*]The points of the team's two drivers add up to the team's total]
+
+---
+
+# Drivers' Championships in Six Seasons
+
+```{r best-driver, echo=FALSE}
+best_drivers_summary <- FERR %>%
+  group_by(season, driver) %>%
+  summarise(total_points = sum(points), .groups = 'drop') %>%
+  group_by(season) %>%
+  slice_max(order_by = total_points, n = 1) %>%
+  ungroup() %>%
+  select(season, driver, total_points)
+kable(head(best_drivers_summary), format = "html")
+```
 
 ---
 
