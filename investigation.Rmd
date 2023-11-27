@@ -55,21 +55,21 @@ season_1_data
 ```{r season_1_vidualisation(total_points, average_points, frequency)}
 ggplot(season_1_data, aes(x = average_points, y = total_points)) +
   geom_point() +
-  geom_smooth(method = "lm", color = "blue") +
+  geom_smooth(method = "lm", color = "blue", se = FALSE) +
   labs(title = "Total Points vs Average Points",
        x = "Average Points",
        y = "Total Points")
 
 ggplot(season_1_data, aes(x = frequency, y = total_points)) +
   geom_point() +
-  geom_smooth(method = "lm", color = "blue") +
+  geom_smooth(method = "lm", color = "blue", se = FALSE) +
   labs(title = "Total Points vs Frequency",
        x = "Frequency",
        y = "Total Points")
 
 ggplot(season_1_data, aes(x = frequency, y = average_points)) +
   geom_point() +
-  geom_smooth(method = "lm", color = "blue") +
+  geom_smooth(method = "lm", color = "blue", se = FALSE) +
   labs(title = "Average Points vs Frequency",
        x = "Frequency",
        y = "Average Points")
@@ -149,7 +149,6 @@ freq_avg3 <- left_join(freq_driver3, avg_driver1, by = "driver")
 #filters freq >= 3 and season != 7
 freq_avg4 <- left_join(freq_driver4, avg_driver2, by = "driver")
 
-View(freq_avg1)
 
 #fit model 2
 multi_re_fit2 <- linear_reg() %>%
