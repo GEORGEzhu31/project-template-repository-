@@ -170,7 +170,7 @@ kable(head(iris), format = "html")
 # Images
 
 ```{r castle, echo = FALSE, out.width = "55%", fig.align = "center", fig.cap = "Image credit: Photo by Jörg Angeli on Unsplash."}
-include_graphics("img/edinburgh-castle.jpg")
+include_graphics("img/FE.jpg")
 ```
 
 Or you can also include a full page image. See next slide.
