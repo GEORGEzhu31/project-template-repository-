@@ -4,7 +4,7 @@
     <title>Formula E Championship Predictions</title>
     <meta charset="utf-8" />
     <meta name="author" content="Fighting Wolves   George Zhu、Jiayi Wan、Wanfang Zhen、Yifu Li &amp; Yunrui Lyu" />
-    <meta name="date" content="2023-11-27" />
+    <meta name="date" content="2023-11-28" />
     <script src="libs/header-attrs-2.25/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Formula E Championship Predictions
 ]
 .subtitle[
-## !!!!!!!!
+## Frequency VS Average points
 ]
 .author[
 ### Fighting Wolves <br> George Zhu、Jiayi Wan、Wanfang Zhen、Yifu Li &amp; Yunrui Lyu
@@ -25,7 +25,7 @@ class: center, middle, inverse, title-slide
 ### University of Edinburgh
 ]
 .date[
-### 2023-11-27
+### 2023-11-28
 ]
 
 ---
@@ -40,9 +40,9 @@ class: center, middle, inverse, title-slide
 
 
 
-class: center, middle
+class:inverse, center, middle
 
-## Who has won the game in the last few years, and what factors influenced their performance.
+## Whether the more races a driver participates in, the higher the cumulative total points and the higher the average points will be
 
 ---
 
@@ -54,15 +54,16 @@ class: inverse, center, middle
 
 # How to win the championship in E-Formula?
 
-- The driver with the most points is the driver's champion.
+- The driver with the most points is the `driver's champion`.
 
-- The team with the most team points* out of the 10 teams is the team champion.
 
-.footnote[[*]The points of the team's two drivers add up to the team's total]
-
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="img/FE.jpg" alt="Image credit: Photo by Malaysian on MKFormula1." width="45%" /&gt;
+&lt;p class="caption"&gt;Image credit: Photo by Malaysian on MKFormula1.&lt;/p&gt;
+&lt;/div&gt;
 ---
 
-# Drivers' Championships in Six Seasons
+# Drivers' Championships in Seven Seasons
 
 &lt;table&gt;
  &lt;thead&gt;
@@ -103,217 +104,250 @@ class: inverse, center, middle
    &lt;td style="text-align:left;"&gt; António Félix da Costa &lt;/td&gt;
    &lt;td style="text-align:right;"&gt; 158 &lt;/td&gt;
   &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Nyck de Vries &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+  &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 
 ---
 
-# Hello World
-
-- Click the `Knit` button to compile your presentation
-
-- Make sure to commit and push all resulting files to your GitHub repo
+class:center, middle
+background-image: url(img/champions.png)
+background-size: contain
 
 ---
 
-class: inverse, middle, center
+#Example (season2)
 
-# Using xaringan
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; driver &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; total_points &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; average_points &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; frequency &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sébastien Buemi &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 155 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Lucas di Grassi &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 153 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 15.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Nico Prost &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 115 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 11.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Sam Bird &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Jérôme d'Ambrosio &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Stéphane Sarrazin &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 70 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+class: inverse, center, middle
+# Liner Regression Model
 
 ---
 
-# xaringan
+#A boring regression with Seven Seasons
 
-- The presentation is created using the `xaringan` package
 
-- Use `---` to separate slides and `--` for incremental builds
-
---
-
-- Like this
-
----
-
-# Layouts
-
-You can use plain text
-
-- or bullet points
-
-.pull-left[
-or text in two columns `\(^*\)`
-]
-.pull-right[
-- like
-- this
-]
-
-.footnote[
-[*] And add footnotes
-]
-
----
-
-# Code
 
 
 ```r
-# a boring regression
-model &lt;- lm(dist ~ speed, data = cars)
-tidy(model)
+single_re_fit1 &lt;- linear_reg() %&gt;%
+  set_engine("lm") %&gt;%
+  fit(avg_points ~ Freq, data = freq_avg1)
+tidy(single_re_fit1)
 ```
 
 ```
 ## # A tibble: 2 × 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)   -17.6      6.76      -2.60 1.23e- 2
-## 2 speed           3.93     0.416      9.46 1.49e-12
+## 1 (Intercept)   0.991     0.376       2.64 1.03e- 2
+## 2 Freq          0.0948    0.0127      7.49 1.58e-10
 ```
 
 ```r
-glance(model)
+#r squared of original model
+glance(single_re_fit1)$r.squared
 ```
 
 ```
-## # A tibble: 1 × 12
-##   r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
-##       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1     0.651         0.644  15.4      89.6 1.49e-12     1  -207.  419.  425.
-## # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+## [1] 0.4449197
+```
+---
+
+#plot
+
+
+```
+## `geom_smooth()` using formula = 'y ~ x'
+```
+
+&lt;img src="presentation_files/figure-html/model1 -1.png" width="80%" /&gt;
+
+---
+
+#Only the first six seasons
+
+
+
+```r
+#fit model 2
+single_re_fit2 &lt;- linear_reg() %&gt;%
+  set_engine("lm") %&gt;%
+  fit(avg_points ~ Freq, data = freq_avg2)
+tidy(single_re_fit2)
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)   1.02      0.397       2.58 1.20e- 2
+## 2 Freq          0.0961    0.0134      7.17 7.40e-10
+```
+
+```r
+#r squared model2, indicating an improvement
+glance(single_re_fit2)$r.squared
+```
+
+```
+## [1] 0.4344037
+```
+---
+
+#visualize model (the first six seasons)
+
+
+```
+## `geom_smooth()` using formula = 'y ~ x'
+```
+
+&lt;img src="presentation_files/figure-html/model2, visualize-1.png" width="80%" /&gt;
+---
+#frequency&gt;=7
+
+
+
+```r
+#fit model 3
+single_re_fit3 &lt;- linear_reg() %&gt;%
+  set_engine("lm") %&gt;%
+  fit(avg_points ~ Freq, data = freq_avg3)
+tidy(single_re_fit3)
+```
+
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)   0.847     0.422       2.01 4.96e- 2
+## 2 Freq          0.0980    0.0126      7.75 2.25e-10
+```
+
+```r
+#r squared model3
+glance(single_re_fit3)$r.squared
+```
+
+```
+## [1] 0.5218821
 ```
 
 ---
-
-# Plots
-
-
-
-&lt;img src="presentation_files/figure-html/plot-iris-1.png" width="80%" /&gt;
-
----
-
-## Plot and text
-
-.pull-left[
-- Some text
-- goes here
-]
-.pull-right[
-&lt;img src="presentation_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
-]
-
----
-
-# Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Width &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Width &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
----
-
-# Images
-
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="img/FE.jpg" alt="Image credit: Photo by Jörg Angeli on Unsplash." width="55%" /&gt;
-&lt;p class="caption"&gt;Image credit: Photo by Jörg Angeli on Unsplash.&lt;/p&gt;
-&lt;/div&gt;
-
-Or you can also include a full page image. See next slide.
-
----
-
-
-class: inverse, center, middle
-background-image: url(img/FE.jpg)
-background-size: contain
----
-
-# Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &amp;#36;\alpha+\beta$ renders `\(\alpha+\beta\)`. You can use the display style with double dollar signs:
+#visualize model(frequecny &gt;=3)
 
 ```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
+## `geom_smooth()` using formula = 'y ~ x'
 ```
 
-`$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$`
+&lt;img src="presentation_files/figure-html/model3, visualize-1.png" width="80%" /&gt;
+---
+#the first six season and frequency&gt;=3
 
-Limitations:
 
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
 
-1. There should not be spaces after the opening `$` or before the closing `$`.
+```r
+#fit model 4
+single_re_fit4 &lt;- linear_reg() %&gt;%
+  set_engine("lm") %&gt;%
+  fit(avg_points ~ Freq, data = freq_avg4)
+tidy(single_re_fit4)
+```
 
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
+```
+## # A tibble: 2 × 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)    0.760    0.421       1.81 7.65e- 2
+## 2 Freq           0.102    0.0129      7.89 1.30e-10
+```
+
+```r
+#r squared model4, indicating an improvement
+glance(single_re_fit4)$r.squared
+```
+
+```
+## [1] 0.5311562
+```
+---
+
+#the first six season and frequency&gt;=3
+
+```
+## `geom_smooth()` using formula = 'y ~ x'
+```
+
+&lt;img src="presentation_files/figure-html/model4, visualize-1.png" width="80%" /&gt;
 
 ---
 
-# Feeling adventurous?
+#Evaluation
+- the `inherent uncertainty` in sports competitions is strong.
 
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
+- the resultant sample size after data filtering may be `limited`, potentially compromising the generalizability and fairness of the results. 
 
-- You are welcome to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+- The 0.53 r.square implies a discernible correlation between a driver's participation frequency and their average performance, signifying a relationship between  `participation frequency and skill level.` 
 
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
+- The linear regression can show the relationship between independent variable and dependt variable  `straightforwardly`.
 
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
+---
+
+class:inverse, middle, center
+#Thanks for listening
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
