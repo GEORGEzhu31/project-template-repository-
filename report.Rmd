@@ -118,8 +118,6 @@ freq_avg1 <- full_join(freq_driver1, avg_driver1, by = "driver")
 multi_re_fit1 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg1)
-#r squared of original model
-glance(multi_re_fit1)$r.squared
 
 multi_re_fit1
 
@@ -131,6 +129,9 @@ model1 <- ggplot(data = freq_avg1, aes(x = Freq, y = avg_points)) +
   geom_smooth(method = "lm",
               se = FALSE)
 model1 
+
+#r squared of original model
+glance(multi_re_fit1)$r.squared
 ```
 
 model 2:
@@ -165,9 +166,6 @@ glance(multi_re_fit2)$r.squared
 
 multi_re_fit2
 
-#r squared model2, indicating an improvement
-glance(multi_re_fit2)$r.squared
-
 #visualize model2
 model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -177,6 +175,9 @@ model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) +
   geom_smooth(method = "lm",
               se = FALSE)
 model2
+
+#r squared model2, indicating an improvement
+glance(multi_re_fit2)$r.squared
 ```
 
 model 3:
@@ -196,9 +197,6 @@ multi_re_fit3 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg3)
 
-#r squared model3
-glance(multi_re_fit3)$r.squared
-
 multi_re_fit3
 
 #visualize model3
@@ -210,6 +208,9 @@ model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) +
   geom_smooth(method = "lm",
               se = FALSE)
 model3
+
+#r squared model3
+glance(multi_re_fit3)$r.squared
 ```
 
 model 4:
@@ -235,9 +236,6 @@ multi_re_fit4 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg4)
 
-#r squared model4, indicating an improvement
-glance(multi_re_fit4)$r.squared
-
 multi_re_fit4
 
 #visualize model 4
@@ -251,6 +249,9 @@ model4 <- ggplot(data = freq_avg4, aes(x = Freq, y = avg_points)) +
 
 
 model4
+
+#r squared model4, indicating an improvement
+glance(multi_re_fit4)$r.squared
 ```
 ## Findings
 Analysis: Figure 1.1 illustrates the computation of the highest-scoring driver for each season, which was subsequently compared with online-searched driver championship data spanning from 2014 to 2017. It was observed that the highest scorer in each season consistently held the championship title. Using the second season as an exemplar, the correlation between a driver's participation frequency and their average and total scores was explored. The analysis revealed that, as a driver's participation frequency increased, there was an observable trend towards higher average scores, indicative of an elevated skill level. This observation led to the formulation of a hypothesis positing that an increase in a driver's participation frequency would correspond to a higher average score. To test this hypothesis, a linear model encompassing seven seasons was constructed to examine the relationship between a driver's participation frequency and their average score. The initial model exhibited notable data dispersion with numerous outliers, resulting in a relatively low R-squared value of 0.44. To address this, a refined data filtering process was employed, wherein only drivers who participated in three or more races were included, resulting in reduced outliers and a discernible increase in the R-squared value. Further refinement involved excluding data from the seventh season due to the impact of the COVID-19 pandemic, as several drivers abstained from participating, rendering the season's data less representative. With this adjustment, the model demonstrated increased concentration, yielding an elevated R-squared value of 0.53. This implies a discernible correlation between a driver's participation frequency and their average performance, signifying a relationship between participation frequency and skill level. However, it is crucial to acknowledge that while increased participation may contribute to enhanced experience and potentially improved skills, it may also coincide with aging and a potential decline in athletic performance. Additionally, the inherent uncertainty in sports competitions contributes to the moderate strength of the relationship between participation frequency and average performance.
