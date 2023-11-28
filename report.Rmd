@@ -139,18 +139,15 @@ model 2:
 Model 2 is the relationship between average points and frequency of each driver in the first six seasons.We removed the data for the seventh season because it has a significant gap compared to the previous six seasons.
 ```{r model2, echo=FALSE}
 #freq filters season != 7 
-freq <- 
-  filter(FERR0, season != "7") %>%
+freq <- filter(FERR0, season != "7") %>%
   select(driver)  %>% 
   table()
 freq_driver2 <- as.data.frame(freq)
 
 #average filters season != 7
-avg_driver2 <-
-  filter(FERR0, season != 7 ) %>%
+avg_driver2 <- filter(FERR0, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
-
 
 #filters season != 7
 freq_avg2 <- left_join(freq_driver2, avg_driver2, by = "driver")
@@ -185,8 +182,7 @@ Model 3 is the relationship between average points and frequency among drivers w
 ```{r model3, echo=FALSE}
 
 #freq filters freq >= 3
-freq_driver3 <-
-  freq_driver1 %>% filter (Freq >= 3)
+freq_driver3 <- freq_driver1 %>% filter (Freq >= 3)
 
 #filters freq >= 3
 freq_avg3 <- left_join(freq_driver3, avg_driver1, by = "driver")
@@ -218,12 +214,11 @@ Model 4 is the relationship between average points and frequency among drivers w
 ```{r model4, echo=FALSE}
 
 #freq filters season != 7 and freq >= 3
-freq_driver4 <-
-  freq_driver2 %>% filter (Freq >= 3)
+freq_driver4 <- freq_driver2 %>% 
+  filter (Freq >= 3)
 
 #average filters season != 7
-avg_driver2 <-
-  filter(FERR0, season != 7 ) %>%
+avg_driver2 <- filter(FERR0, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
