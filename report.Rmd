@@ -97,7 +97,7 @@ season_2_data <- season_2 %>%
   arrange(desc(total_points)) 
 season_2_data
 ```
-## 插入模型，介绍labels
+
 model 1:
 
 Model 1 is the relationship between average points and frequency of each driver in all 7 seasons.
@@ -300,12 +300,8 @@ model4 <- ggplot(data = freq_avg4, aes(x = Freq, y = avg_points)) +
 model4
 ```
 ## Findings
-Outcomes:(clean & tidy data, graphs and tables)
-
-Analysis:
-
-Evaluation and Limitations:
-
+Analysis: Figure 1.1 illustrates the computation of the highest-scoring driver for each season, which was subsequently compared with online-searched driver championship data spanning from 2014 to 2017. It was observed that the highest scorer in each season consistently held the championship title. Using the second season as an exemplar, the correlation between a driver's participation frequency and their average and total scores was explored. The analysis revealed that, as a driver's participation frequency increased, there was an observable trend towards higher average scores, indicative of an elevated skill level. This observation led to the formulation of a hypothesis positing that an increase in a driver's participation frequency would correspond to a higher average score. To test this hypothesis, a linear model encompassing seven seasons was constructed to examine the relationship between a driver's participation frequency and their average score. The initial model exhibited notable data dispersion with numerous outliers, resulting in a relatively low R-squared value of 0.44. To address this, a refined data filtering process was employed, wherein only drivers who participated in three or more races were included, resulting in reduced outliers and a discernible increase in the R-squared value. Further refinement involved excluding data from the seventh season due to the impact of the COVID-19 pandemic, as several drivers abstained from participating, rendering the season's data less representative. With this adjustment, the model demonstrated increased concentration, yielding an elevated R-squared value of 0.53. This implies a discernible correlation between a driver's participation frequency and their average performance, signifying a relationship between participation frequency and skill level. However, it is crucial to acknowledge that while increased participation may contribute to enhanced experience and potentially improved skills, it may also coincide with aging and a potential decline in athletic performance. Additionally, the inherent uncertainty in sports competitions contributes to the moderate strength of the relationship between participation frequency and average performance.
+Evaluation and Limitations: During the data filtering process, emphasis was placed on excluding non-representative data without the incorporation of random selection. Furthermore, the resultant sample size after data filtering may be limited, potentially compromising the generalizability and fairness of the results. In constructing the model, consideration was given to only one influencing factor on average scores, despite the likelihood of multiple factors influencing the outcomes.
 
 ## References
 
