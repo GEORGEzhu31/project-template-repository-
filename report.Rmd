@@ -154,7 +154,6 @@ avg_driver2 <-
 
 #filters season != 7
 freq_avg2 <- left_join(freq_driver2, avg_driver2, by = "driver")
-#filters freq >= 3
 
 #fit model 2
 multi_re_fit2 <- linear_reg() %>%
