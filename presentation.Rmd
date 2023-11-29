@@ -17,16 +17,12 @@ output:
 ---
 
 ```{r install-package, include = FALSE, eval = FALSE}
-# Copy and paste the following code into your console to download and install
-# the `xaringan` package that contains all of the code which allows you 
-# to create presentation slides in Rmarkdown
 install.packages("xaringanthemer")
 install.packages("kableExtra")
 ```
 
 
 ```{r load-packages, include = FALSE}
-# Add any additional packages you need to this chunk
 library(tidyverse)
 library(tidymodels)
 library(palmerpenguins)
@@ -46,10 +42,8 @@ knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618,
 
 ```{r load-data, include=FALSE}
 # Load your data here
-FERR0 <- read_csv("data/formula_e_race_results.csv") %>%
+FERR <- read_csv("data/formula_e_race_results.csv") %>%
   select(season, race_num, driver, points)
-FERR <- FERR0 %>% 
-  filter(points != 0)
 ```
 
 class:inverse, center, middle
@@ -95,12 +89,12 @@ include_graphics("img/champions.png")
 
 ---
 
-##Example (Season 2)
+##Season 1
 
-```{r season_2_data(example), echo=FALSE}
-season_2 <- FERR0 %>%
-  filter(season == 2)
-season_2_data <- season_2 %>%
+```{r season_1_data(example), echo=FALSE}
+season_1 <- FERR %>%
+  filter(season == 1)
+season_1_data <- season_1 %>%
   group_by(driver) %>%
   summarise(
     total_points = sum(points),
@@ -108,7 +102,7 @@ season_2_data <- season_2 %>%
     frequency = n()
     ) %>%
   arrange(desc(total_points)) 
-y_html <- knitr:: kable(season_2_data, "html", align = "l") %>%
+y_html <- knitr:: kable(season_1_data, "html", align = "l") %>%
                    kable_styling(bootstrap_options = "basic",
                                  full_width = F, 
                                  font_size = 10) %>%
@@ -118,22 +112,22 @@ y_html
 ---
 
 class: inverse, center, middle
-# Liner Regression Model
+# Linear Regression Models
 
 ---
 
-##A Boring Regression with Seven Seasons
+##All Seasons
 
 ```{r model1, echo=FALSE}
 #frequency
 freq <- 
-  select(FERR0, driver)  %>% 
+  select(FERR, driver)  %>% 
   table()
 freq_driver1 <- as.data.frame(freq)
 
 #average
 
-avg_driver1 <- FERR0 %>%
+avg_driver1 <- FERR %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
@@ -163,17 +157,17 @@ model1
 
 ---
 
-##Only the First Six Seasons
+##First Six Seasons
 ```{r model2}
 #freq filters season != 7 
 freq <- 
-  filter(FERR0, season != "7") %>%
+  filter(FERR, season != "7") %>%
   select(driver)  %>% 
   table()
 freq_driver2 <- as.data.frame(freq)
 #average filters season != 7
 avg_driver2 <-
-  filter(FERR0, season != 7 ) %>%
+  filter(FERR, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 #filters season != 7
@@ -192,7 +186,7 @@ glance(single_re_fit2)$r.squared
 ```
 ---
 
-##Visualize Model (the first six seasons)
+##First Six Seasons
 
 ```{r,model2, visualize, echo=FALSE, fig.width=10}
 model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
@@ -226,7 +220,7 @@ glance(single_re_fit3)$r.squared
 ```
 
 ---
-##Visualize Model(frequecny >=3)
+##Frequecny >=3
 ```{r, model3, visualize, echo=FALSE, fig.width=10}
 model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -238,14 +232,14 @@ model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) +
 model3
 ```
 ---
-##the First Six Season and Frequency>=3
+##First Six Seasons & Frequency>=3
 ```{r model4}
 #freq filters season != 7 and freq >= 3
 freq_driver4 <-
   freq_driver2 %>% filter (Freq >= 3)
 #average filters season != 7
 avg_driver2 <-
-  filter(FERR0, season != 7 ) %>%
+  filter(FERR, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 #filters freq >= 3 and season != 7
@@ -264,7 +258,7 @@ glance(single_re_fit4)$r.squared
 ```
 ---
 
-##the First Six Season and Frequency>=3
+##First Six Seasons & Frequency>=3
 ```{R, model4, visualize, echo=FALSE, fig.width=10}
 model4 <- ggplot(data = freq_avg4, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -292,4 +286,4 @@ model4
 ---
 
 class:inverse, middle, center
-#Thanks for listening
+#Thanks for listening!
