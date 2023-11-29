@@ -33,22 +33,21 @@ The report commences with a concise delineation of the methodology for curating 
 
 
 ## Methodology
-The research process harnesses the capabilities of the tidyverse, tidymodels, and ggplot2 packages, integral tools in the realm of data analysis.
+The research process harnessed the capabilities of the tidyverse, tidymodels, and ggplot2 packages, integral tools in the realm of data analysis.
 
-During the initial stage of data cleansing, functions such as group_by(), select(), slice(), filter(), and summarize () play a pivotal role. These functions meticulously shape and refine the raw data into a structured and coherent format. Moreover, they also help merge information needed such as average points. These data frames, encompassing driver details, total points, average points, and frequency derived from FERR0, lay the groundwork for subsequent analytical endeavors.
+During the initial stage of data cleansing, functions such as group_by(), select(), slice(), filter(), and summarize () played a pivotal role. These functions meticulously shaped and refined the raw data into a structured and coherent format. Moreover, they also helped merge information needed such as average points. These data frames, encompassing driver details, total points, average points, and frequency derived from FERR0, laid the groundwork for subsequent analytical endeavors.
 
-Once the requisite data is meticulously gathered, a linear regression analysis is employed to discern potential correlations between various variables. This critical step is executed using ggplot(), with aes(x = Freq, y = avg_points) effectively mapping the relationship. The function geom_point() crafts a point diagram, while geom_smooth(method = "lm", se = FALSE) elegantly overlays the linear regression line, simultaneously eliminating any surrounding shadows. The visualizations thus produced offer insightful glimpses, potentially guiding preliminary predictive analyses.
+Once the requisite data was meticulously gathered, a linear regression analysis was employed to discern potential correlations between various variables. This critical step was executed using ggplot(), with aes(x = Freq, y = avg_points) effectively mapping the relationship. The function geom_point() crafted a point diagram, while geom_smooth(method = “lm”, se = FALSE) elegantly overlaid the linear regression line, simultaneously eliminating any surrounding shadows. The visualizations thus produced offered insightful glimpses, potentially guiding preliminary predictive analyses.
 
-Based on the insights obtained from the previous stage, a more detailed investigation of the relationship between average total points and frequency (of attending races) has been carried out. Average total point refers to the average points each driver earns throughout races they attended, which largely reflects the racing level of these drivers. Frequency, on the other hand, indicates the number of competitions the drivers have participated in, which is correlated to the experience of these drivers. 
+Based on the insights obtained from the previous stage, a more detailed investigation of the relationship between average total points and frequency (of attending races) was carried out. Average total point referred to the average points each driver earned throughout races they attended, which largely reflected the racing level of these drivers. Frequency, on the other hand, indicated the number of competitions the drivers had participated in, which was correlated to the experience of these drivers.
 
-An initial model (model1) is plotted using linear_reg(), which sets the engine as "lm". Then the command fit() is piped, providing the name of the data and relationship avg_points ~ Freq. Examining the outcomes of this model reveal crucial insights into the estimated intercept and the correlation between these variable pairs.
+An initial model (model1) was plotted using linear_reg(), which set the engine as “lm”. Then the command fit() was piped, providing the name of the data and relationship avg_points ~ Freq. Examining the outcomes of this model revealed crucial insights into the estimated intercept and the correlation between these variable pairs.
 
-The original model is visualized by ggplot(). The function geom_point() tells R which type of diagram should be plotted. geom_smooth() provides visualization of the linear regression line as well. To augment the clarity and aesthetic appeal of these diagrams, the labs() layer is incorporated, ensuring the lucid presentation of
-information.
+The original model was visualized by ggplot(). The function geom_point() told R which type of diagram should be plotted. geom_smooth() provided visualization of the linear regression line as well. To augment the clarity and aesthetic appeal of these diagrams, the labs() layer was incorporated, ensuring the lucid presentation of information.
 
-Three additional models, named model2, model3, and model4, evolved from the foundational model. They apply specific filters: "season != 7", "Freq >= 3", and a combination of both, supported by derived data frames. These data frames, created using a blend of filter(), group_by(), and summarize(), extract essential information tailored to meet diverse conditions. The efficacy of all four models is appraised using the r squared value obtained from the glance()$r.squared function. The proximity of the r-squared value to 1 is indicative of the strength of the correlation between the x-y variables.
+Three additional models, named model2, model3, and model4, evolved from the foundational model. They applied specific filters: “season != 7”, “Freq >= 3”, and a combination of both, supported by derived data frames. These data frames, created using a blend of filter(), group_by(), and summarize(), extracted essential information tailored to meet diverse conditions. The efficacy of all four models was appraised using the r squared value obtained from the glance()$r.squared function. The proximity of the r-squared value to 1 was indicative of the strength of the correlation between the x-y variables.
 
-The visualization stage of the derived model is similar to the previous procedure. ggplot() completes the work. Point diagrams are plotted by geom_point().  geom_smooth(method = "lm", se = FALSE) is there to visualize the linear regression line. labs() layer is added as well to improve the presentation of the diagrams.
+The visualization stage of the derived model was similar to the previous procedure. ggplot() completed the work. Point diagrams were plotted by geom_point(). geom_smooth(method = “lm”, se = FALSE) was there to visualize the linear regression line. labs() layer was added as well to improve the presentation of the diagrams.
 
 
 ## Data
@@ -262,7 +261,7 @@ To enhance the comprehensiveness of our study, future research should incorporat
 
 
 ## Conclusion
-In general, this report illustrates that the more races a driver participates in, the higher their level of experience and skill, resulting in higher average and total scores.
+This report aims to demonstrate that the number of races the drivers participate in has a moderate positive effect on the points they earn. The analysis started with tidying and summarizing, inspired an initial idea about potential relationships can be explored from the dataframes. Further works involved modeling, visualizing and evaluating. A linear regression model was used to predict the relationship between the frequency of participation and the average score of individual drivers. The r-squared value of the model was improved from 0.44 to 0.53 by removing detected outliers.The Limitations of the model, such as potential bias and reduced sample size, were also discussed. The findings of this study is expected to bring some possible inspirations to the field of events. For instance, team managers who aim to optimize their drivers’ performance.
 
 
 ## References
