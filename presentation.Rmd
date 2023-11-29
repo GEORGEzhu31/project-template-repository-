@@ -1,7 +1,7 @@
 ---
 title: "Formula E Championship Predictions"
 subtitle: "Frequency VS Average points"
-author: "Fighting Wolves <br> George Zhu、Jiayi Wan、Wanfang Zhen、Yifu Li & Yunrui Lyu"
+author: "&#x2694;&#xFE0F; Fighting Wolves &#x2694;&#xFE0F; <br> George Zhu,Jiayi Wan,Wanfang Zhen,Yifu Li & Yunrui Lyu"
 institute: "University of Edinburgh"
 date: "`r Sys.Date()`"
 output:
@@ -31,17 +31,16 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringanthemer)
-style_mono_accent(
-  base_color = "#1c5253",
-  header_font_google = google_font("Josefin Sans"),
-  text_font_google   = google_font("Montserrat", "300", "300i"),
-  code_font_google   = google_font("Fira Mono")
-)
+library(kableExtra)
+style_mono_accent(base_color = "#1c5253", 
+          header_font_google = google_font("Josefin Sans"),
+          text_font_google   = google_font("Montserrat", "300", "300i"),
+          code_font_google   = google_font("Fira Mono"))
 ```
 
 ```{r setup, include=FALSE}
 # For better figure resolution
-knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "80%")
+knitr::opts_chunk$set(fig.retina = 3, dpi = 300, fig.width = 6, fig.asp = 0.618, out.width = "65%")
 ```
 
 ```{r load-data, include=FALSE}
@@ -54,17 +53,11 @@ FERR <- FERR0 %>%
 
 class:inverse, center, middle
 
-## Whether the more races a driver participates in, the higher the cumulative total points and the higher the average points will be
+## Whether the more races a driver participates in,the higher the average points will be
 
 ---
 
-class: inverse, center, middle
-
-#Champion?Champion!
-
----
-
-# How to win the championship in E-Formula?
+##How to Win the Championship in Formula-E?
 
 - The driver with the most points is the `driver's champion`.
 
@@ -74,8 +67,9 @@ include_graphics("img/FE.jpg")
 ```
 ---
 
-# Drivers' Championships in Seven Seasons
+## Drivers' Championships in Seven Seasons
 
+.pull-left[
 ```{r best-driver, echo=FALSE}
 best_drivers_summary <- FERR %>%
   group_by(season, driver) %>%
@@ -84,18 +78,23 @@ best_drivers_summary <- FERR %>%
   slice_max(order_by = total_points, n = 1) %>%
   ungroup() %>%
   select(season, driver, total_points)
-kable(best_drivers_summary, format = "html")
+x_html <- knitr:: kable(best_drivers_summary, "html", align = "l") %>%
+                   kable_styling(bootstrap_options = "bordered",
+                                 full_width = F, 
+                                 font_size = 15) %>%
+                    column_spec(1:3, bold = T, color = "#1F4257", background = "white")
+x_html
+```
+]
+
+```{r champions, echo = FALSE, out.width = "50%", fig.align='right', fig.cap = "Image credit: Photo on Formula E Chronicles 2022."}
+include_graphics("img/champions.png")
 ```
 
----
-
-class:center, middle
-background-image: url(img/champions.png)
-background-size: contain
 
 ---
 
-#Example (season2)
+##Example (Season 2)
 
 ```{r season_2_data(example), echo=FALSE}
 season_2 <- FERR0 %>%
@@ -108,7 +107,12 @@ season_2_data <- season_2 %>%
     frequency = n()
     ) %>%
   arrange(desc(total_points)) 
-kable(head(season_2_data), format = "html")
+y_html <- knitr:: kable(season_2_data, "html", align = "l") %>%
+                   kable_styling(bootstrap_options = "basic",
+                                 full_width = F, 
+                                 font_size = 10) %>%
+                    column_spec(1:4, bold = T, color = "#1F4257", background = "white")
+y_html
 ```
 ---
 
@@ -117,7 +121,7 @@ class: inverse, center, middle
 
 ---
 
-#A boring regression with Seven Seasons
+##A Boring Regression with Seven Seasons
 
 ```{r model1, echo=FALSE}
 #frequency
@@ -140,14 +144,12 @@ single_re_fit1 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg1)
 tidy(single_re_fit1)
-#r squared of original model
 glance(single_re_fit1)$r.squared
 ```
 ---
 
-#plot
-
-```{r, model1 ,echo = FALSE}
+##Plot
+```{r, model1,visualize, echo=FALSE, fig.width=10}
 model1 <- ggplot(data = freq_avg1, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
   labs(title = "the relationship between average points and frequency in all seasons",
@@ -160,39 +162,25 @@ model1
 
 ---
 
-#Only the first six seasons
-```{r model2, echo=FALSE}
+##Only the First Six Seasons
+```{r model2}
 #freq filters season != 7 
 freq <- 
   filter(FERR0, season != "7") %>%
   select(driver)  %>% 
   table()
 freq_driver2 <- as.data.frame(freq)
-
-#freq filters freq >= 3
-freq_driver3 <-
-  freq_driver1 %>% filter (Freq >= 3)
-
-#freq filters season != 7 and freq >= 3
-freq_driver4 <-
-  freq_driver2 %>% filter (Freq >= 3)
-
 #average filters season != 7
 avg_driver2 <-
   filter(FERR0, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
-
-
 #filters season != 7
 freq_avg2 <- left_join(freq_driver2, avg_driver2, by = "driver")
-#filters freq >= 3
-freq_avg3 <- left_join(freq_driver3, avg_driver1, by = "driver")
-#filters freq >= 3 and season != 7
-freq_avg4 <- left_join(freq_driver4, avg_driver2, by = "driver")
+
 ```
 
-```{r model2, regression}
+```{r model2, regression, echo=FALSE}
 #fit model 2
 single_re_fit2 <- linear_reg() %>%
   set_engine("lm") %>%
@@ -203,9 +191,9 @@ glance(single_re_fit2)$r.squared
 ```
 ---
 
-#visualize model (the first six seasons)
+##Visualize Model (the first six seasons)
 
-```{r,model2, visualize, echo=FALSE}
+```{r,model2, visualize, echo=FALSE, fig.width=10}
 model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
    labs(title = "the relationship between average points and frequency in the first six seasons",
@@ -216,39 +204,17 @@ model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) +
 model2
 ```
 ---
-#frequency>=7
-```{r model3, echo=FALSE}
-#freq filters season != 7 
-freq <- 
-  filter(FERR0, season != "7") %>%
-  select(driver)  %>% 
-  table()
-freq_driver2 <- as.data.frame(freq)
-
+##Frequency>=3
+```{r model3}
 #freq filters freq >= 3
 freq_driver3 <-
   freq_driver1 %>% filter (Freq >= 3)
 
-#freq filters season != 7 and freq >= 3
-freq_driver4 <-
-  freq_driver2 %>% filter (Freq >= 3)
-
-#average filters season != 7
-avg_driver2 <-
-  filter(FERR0, season != 7 ) %>%
-  group_by(driver) %>%
-  summarize(avg_points = mean(points, na.rm = TRUE))
-
-
-#filters season != 7
-freq_avg2 <- left_join(freq_driver2, avg_driver2, by = "driver")
 #filters freq >= 3
 freq_avg3 <- left_join(freq_driver3, avg_driver1, by = "driver")
-#filters freq >= 3 and season != 7
-freq_avg4 <- left_join(freq_driver4, avg_driver2, by = "driver")
 ```
 
-```{r, model3, regression}
+```{r, model3, regression, echo=FALSE}
 #fit model 3
 single_re_fit3 <- linear_reg() %>%
   set_engine("lm") %>%
@@ -259,8 +225,8 @@ glance(single_re_fit3)$r.squared
 ```
 
 ---
-#visualize model(frequecny >=3)
-```{r, model3, visualize, echo=FALSE}
+##Visualize Model(frequecny >=3)
+```{r, model3, visualize, echo=FALSE, fig.width=10}
 model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
    labs(title = "the relationship among drivers whose frequency is greater than 3",
@@ -271,39 +237,21 @@ model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) +
 model3
 ```
 ---
-#the first six season and frequency>=3
-```{r model4, echo=FALSE}
-#freq filters season != 7 
-freq <- 
-  filter(FERR0, season != "7") %>%
-  select(driver)  %>% 
-  table()
-freq_driver2 <- as.data.frame(freq)
-
-#freq filters freq >= 3
-freq_driver3 <-
-  freq_driver1 %>% filter (Freq >= 3)
-
+##the First Six Season and Frequency>=3
+```{r model4}
 #freq filters season != 7 and freq >= 3
 freq_driver4 <-
   freq_driver2 %>% filter (Freq >= 3)
-
 #average filters season != 7
 avg_driver2 <-
   filter(FERR0, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
-
-
-#filters season != 7
-freq_avg2 <- left_join(freq_driver2, avg_driver2, by = "driver")
-#filters freq >= 3
-freq_avg3 <- left_join(freq_driver3, avg_driver1, by = "driver")
 #filters freq >= 3 and season != 7
 freq_avg4 <- left_join(freq_driver4, avg_driver2, by = "driver")
 ```
 
-```{r, model4,regression}
+```{r, model4,regression, echo=FALSE}
 #fit model 4
 single_re_fit4 <- linear_reg() %>%
   set_engine("lm") %>%
@@ -315,8 +263,8 @@ glance(single_re_fit4)$r.squared
 ```
 ---
 
-#the first six season and frequency>=3
-```{R, model4, visualize, echo=FALSE}
+##the First Six Season and Frequency>=3
+```{R, model4, visualize, echo=FALSE, fig.width=10}
 model4 <- ggplot(data = freq_avg4, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
   labs(title = "the relationship among drivers whose frequency is greater than 3 in the first six seasons",
