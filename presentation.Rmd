@@ -1,7 +1,7 @@
 ---
 title: "Formula E Championship Predictions"
 subtitle: "Frequency VS Average points"
-author: "&#x2694;&#xFE0F; Fighting Wolves &#x2694;&#xFE0F; <br> George Zhu,Jiayi Wan,Wanfang Zhen,Yifu Li & Yunrui Lyu"
+author: "Fighting Wolves <br> Jiayi Wan, Yunrui Lyu, Wanfang Zhen, Yifu Li & George Zhu"
 institute: "University of Edinburgh"
 date: "`r Sys.Date()`"
 output:
@@ -54,7 +54,7 @@ class:inverse, center, middle
 
 ##How to Win the Championship in Formula-E?
 
-- The driver with the most points is the `driver's champion`.
+- The driver with the most points is the `driver's champion`(The Official Home of Formula E).
 
 
 ```{r formula-e, echo = FALSE, out.width = "45%", fig.align = "center", fig.cap = "Image credit: Photo by Malaysian on MKFormula1."}
@@ -72,7 +72,16 @@ best_drivers_summary <- FERR %>%
   group_by(season) %>%
   slice_max(order_by = total_points, n = 1) %>%
   ungroup() %>%
-  select(season, driver, total_points)
+  left_join(FERR %>% 
+              group_by(season, driver) %>%
+              summarise(races_attended = n_distinct(race_num), .groups = 'drop'), 
+            by = c("season", "driver")) %>%
+  left_join(FERR %>% 
+              group_by(season) %>%
+              summarise(total_races = n_distinct(race_num)), 
+            by = "season") %>%
+  mutate(attended_all_races = races_attended == total_races) %>%
+  select(season, driver, total_points, attended_all_races)
 x_html <- knitr:: kable(best_drivers_summary, "html", align = "l") %>%
                    kable_styling(bootstrap_options = "bordered",
                                  full_width = F, 
@@ -151,6 +160,7 @@ model1 <- ggplot(data = freq_avg1, aes(x = Freq, y = avg_points)) +
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
+              formula = y ~ x,
               se = FALSE)
 model1 
 ```
@@ -195,6 +205,7 @@ model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) +
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
+              formula = y ~ x,
               se = FALSE)
 model2
 ```
@@ -228,6 +239,7 @@ model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) +
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
+              formula = y ~ x,
               se = FALSE)
 model3
 ```
@@ -266,9 +278,8 @@ model4 <- ggplot(data = freq_avg4, aes(x = Freq, y = avg_points)) +
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
+              formula = y ~ x,
               se = FALSE)
-
-
 model4
 ```
 
