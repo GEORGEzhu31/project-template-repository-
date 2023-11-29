@@ -35,7 +35,7 @@ The report commences with a concise delineation of the methodology for curating 
 ## Methodology
 The research process harnesses the capabilities of the tidyverse, tidymodels, and ggplot2 packages, integral tools in the realm of data analysis.
 
-During the initial stage of data cleansing, functions such as select(), slice(), filter(), and summarize () play a pivotal role. These functions meticulously shape and refine the raw data into a structured and coherent format. Moreover, they also help merge information needed such as average points. These data frames, encompassing driver details, total points, average points, and frequency derived from FERR0, lay the groundwork for subsequent analytical endeavors.
+During the initial stage of data cleansing, functions such as group_by(), select(), slice(), filter(), and summarize () play a pivotal role. These functions meticulously shape and refine the raw data into a structured and coherent format. Moreover, they also help merge information needed such as average points. These data frames, encompassing driver details, total points, average points, and frequency derived from FERR0, lay the groundwork for subsequent analytical endeavors.
 
 Once the requisite data is meticulously gathered, a linear regression analysis is employed to discern potential correlations between various variables. This critical step is executed using ggplot(), with aes(x = Freq, y = avg_points) effectively mapping the relationship. The function geom_point() crafts a point diagram, while geom_smooth(method = "lm", se = FALSE) elegantly overlays the linear regression line, simultaneously eliminating any surrounding shadows. The visualizations thus produced offer insightful glimpses, potentially guiding preliminary predictive analyses.
 
@@ -54,15 +54,24 @@ The visualization stage of the derived model is similar to the previous procedur
 ## Data
 1 Graphs
 
-According to The Official Home of Formula E, the champion of the Formula E championship is determined by the driver with the highest cumulative points in the season. The following chart lists the drivers with the highest total points across seven seasons, comparing this data with the champion information provided by Formula E Chronicles(2022).
-```{r, echo=FALSE}
+According to The Official Home of Formula E, the champion of the Formula E championship is determined by the driver with the highest cumulative points in the season. The accompanying chart lists the drivers with the highest total points across seven seasons, and this data is compared with the champion information provided by Formula E Chronicles(2022). Additionally, this analysis includes a test to determine whether these champions participated in every race of their respective seasons.
+```{r best_drivers_summary}
 best_drivers_summary <- FERR %>%
   group_by(season, driver) %>%
   summarise(total_points = sum(points), .groups = 'drop') %>%
   group_by(season) %>%
   slice_max(order_by = total_points, n = 1) %>%
   ungroup() %>%
-  select(season, driver, total_points)
+  left_join(FERR %>% 
+              group_by(season, driver) %>%
+              summarise(races_attended = n_distinct(race_num), .groups = 'drop'), 
+            by = c("season", "driver")) %>%
+  left_join(FERR %>% 
+              group_by(season) %>%
+              summarise(total_races = n_distinct(race_num)), 
+            by = "season") %>%
+  mutate(attended_all_races = races_attended == total_races) %>%
+  select(season, driver, total_points, attended_all_races)
 best_drivers_summary
 ```
 (Graph 1.1)
@@ -91,7 +100,7 @@ season_1_data
 
 3 Models
 
-Model 1 is based on the original dataset FERR0 and specifically establishes the positive correlation between the participation frequency and the average scores of all drivers over the past seven seasons. 
+Model 1 is based on the original dataset FERR and specifically establishes the positive correlation between the participation frequency and the average scores of all drivers over the past seven seasons. 
 ```{r model1, echo=FALSE}
 #frequency
 freq <- 
@@ -239,7 +248,7 @@ glance(multi_re_fit4)$r.squared
 
 
 ## Findings
-The analysis is augmented by Graph 1.1, which visualizes the highest-scoring drivers per season, juxtaposed with championship data(Graph 1.2) from 2014 to 2021. A key observation here is the consistent championship attainment by the highest accumulated points, suggesting a strong link between scoring and overall success. 
+The analysis is augmented by Graph 1.1, which visualizes the highest-scoring drivers per season, juxtaposed with championship data(Graph 1.2) from 2014 to 2021. A key observation here is the consistent championship attainment by the highest accumulated points, suggesting a strong link between scoring and overall success. Another notable finding is that all championship drivers participated in all races of the season, suggesting a certain relationship between 'points' and "frequency". 
 
 Taking the second season as an example, we delved into the correlation between a driver's participation frequency and their average and total points. The analysis revealed that as a driver's participation frequency increased, there was a noticeable trend towards higher average points, indicating an elevated skill level. This observation led to the formulation of a hypothesis suggesting that an increase in a driver's participation frequency would correspond to a higher average score.
 
