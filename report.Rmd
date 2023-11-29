@@ -1,6 +1,6 @@
 ---
 title: "Formula E Championship Predictions"
-author: "by Fighting Wolves: Jiayi Wan, Wanfang Zhen, George Zhu, Yifu Li & Yunrui Lyu"
+author: "Fighting Wolves: Jiayi Wan, Wanfang Zhen, George Zhu, Yifu Li & Yunrui Lyu"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -17,55 +17,44 @@ library(dplyr)
 library(ggplot2)
 library(tidymodels)
 library(knitr)
-
-
 ```
+
 
 ```{r load-data, include=FALSE}
-FERR0 <- read_csv("data/formula_e_race_results.csv") %>%
+FERR <- read_csv("data/formula_e_race_results.csv") %>%
   select(season, race_num, driver, points)
-FERR <- FERR0 %>% 
-  filter(points != 0)
 ```
 
 
+## Introduction
+Formula E championship, known for its unpredictability due to a myriad of factors such as driver expertise, car performance, circuit characteristics, and race formats, ignites interest in statistical exploration. Emphasizing an unbiased approach, this report aims to explore the relationship between the number of races drivers participated in and their performance.
+
+The report commences with a concise delineation of the methodology for curating pristine data, coupled with an explanation of the selected models. Subsequently, tables, figures, and summary values are presented in a clear and explanatory manner, followed by four linear regression models developed to explore various facets of the data, with each model addressing different conditions such as season exclusions and minimum participation requirements. This study subsequently analyses the model's fitting, advantages, and limitations, and proposes feasible recommendations for future in-depth research. Finally, the report addresses the research objectives and questions, offering responses based on the statistical analysis.
 
 
+## Methodology
+The research process harnesses the capabilities of the tidyverse, tidymodels, and ggplot2 packages, integral tools in the realm of data analysis.
 
-## Research Question
-The Formula E Championship, notorious for its unpredictability, is influenced by a myriad of factors such as driver expertise, car performance, circuit characteristics, and race formats, all contributing to its unforeseeable outcomes. This report aims to explore the relationship between XXX and XXX in the most impartial manner possible.
+During the initial stage of data cleansing, functions such as select(), slice(), filter(), and summarize () play a pivotal role. These functions meticulously shape and refine the raw data into a structured and coherent format. Moreover, they also help merge information needed such as average points. These data frames, encompassing driver details, total points, average points, and frequency derived from FERR0, lay the groundwork for subsequent analytical endeavors.
 
-The report commences with a concise delineation of the methodology for curating pristine data, coupled with an exposition of the selected statistical models and the pertinent questions they are designed to address. Subsequently, tables, figures, summary values, and fitted models are presented in a clear and explanatory manner. The research then objectively highlights systematic and random errors found in the data, methodology, and practical implications, with proposed ethical solutions for systematic biases. Finally, the report addresses the research objectives and questions, offering responses based on the statistical analysis.
+Once the requisite data is meticulously gathered, a linear regression analysis is employed to discern potential correlations between various variables. This critical step is executed using ggplot(), with aes(x = Freq, y = avg_points) effectively mapping the relationship. The function geom_point() crafts a point diagram, while geom_smooth(method = "lm", se = FALSE) elegantly overlays the linear regression line, simultaneously eliminating any surrounding shadows. The visualizations thus produced offer insightful glimpses, potentially guiding preliminary predictive analyses.
 
+Based on the insights obtained from the previous stage, a more detailed investigation of the relationship between average total points and frequency (of attending races) has been carried out. Average total point refers to the average points each driver earns throughout races they attended, which largely reflects the racing level of these drivers. Frequency, on the other hand, indicates the number of competitions the drivers have participated in, which is correlated to the experience of these drivers. 
 
+An initial model (model1) is plotted using linear_reg(), which sets the engine as "lm". Then the command fit() is piped, providing the name of the data and relationship avg_points ~ Freq. Examining the outcomes of this model reveal crucial insights into the estimated intercept and the correlation between these variable pairs.
 
-## Methods
-1.the defination of the terminologies in the data set
+The original model is visualized by ggplot(). The function geom_point() tells R which type of diagram should be plotted. geom_smooth() provides visualization of the linear regression line as well. To augment the clarity and aesthetic appeal of these diagrams, the labs() layer is incorporated, ensuring the lucid presentation of
+information.
 
-"The initial step involved labeling the data as FERR0 and FERR. FERR0 retained four variables from the original dataset: 'season' (the nth racing season), 'race_num' (the mth race), 'driver' (the name of the driver), and 'points' (the total points for the mth race). FERR, on the other hand, was derived from FERR0 by filtering out all rows where the 'points' were zero."
+Three additional models, named model2, model3, and model4, evolved from the foundational model. They apply specific filters: "season != 7", "Freq >= 3", and a combination of both, supported by derived data frames. These data frames, created using a blend of filter(), group_by(), and summarize(), extract essential information tailored to meet diverse conditions. The efficacy of all four models is appraised using the r squared value obtained from the glance()$r.squared function. The proximity of the r-squared value to 1 is indicative of the strength of the correlation between the x-y variables.
 
-
-The investigation process utilises packages tidyverse, tidymodels and ggplot2.
-
-In the cleaning stage, functions select(), slice(), filter(), summarize() are used the most to manipulate and transform the original data into a tidy format. They also help merging information needed such as average points. As resulting, dataframes containing driver, total points, average points and frequency based on FERR0 are created to support further work. 
-
-After obtaining the required data, linear regression is plotted between different variables to observe any potential relationship. This step is completed by using ggplot(). aes(x = Freq, y = avg_points). Function geom_point() implies a point diagram and geom_smooth(method = "lm", se = FALSE) provides the linear regression line and removes the shadow around it. By observing the visualizations, there could be some preliminary inspiration about the prediction. 
-
-Based on the insights obtained from the previous stage, a more detailed investigation on the relationship between average total points and frequency (of attending races) has been carried out. Average total point refers to the average points each driver earns throughout races they attended, which largely reflects the racing level of these drivers. Frequency, on the other hand, indicates the number of competitions the drivers have participated in, which is correlated to the experience of these drivers. 
-
-An initial model (model1) is plotted using linear_reg(), sets engine as "lm". Then the command fit() is piped, providing name of the data and relationship avg_points ~ Freq. By taking a look at outcome of the model, the estimate intercept and correlation between the pair of variables can be found.  
-
-The original model is visualized by ggplot(). The function geom_point() tells R which type of diagram should be plotted. geom_smooth() provides visualization of the linear regression line as well. To improve the readability and aesthetics of the diagram, labs() is added as a layer, allowing the information to be presented clearly.  
-
-Three models (model2/3/4) are derived from the original version. They respectively filters "season != 7", "Freq >= 3", "season != 7" and "Freq >= 3", supporting by derived dataframes, where filter(), group_by(), summarize() are applied to extract the needed information to satisfy various conditions. All the four models are evaluated by the r squared using the function glance()$r.squared. The closer the r squared value is to 1, the stronger the correlation between the x-y variables is. 
-
-The visualization stage of derived model is similarly to the previous procedure. ggplot() completes the work. Point diagrams are plotted by geom_point().  geom_smooth(method = "lm", se = FALSE) is there to visualize the linear regression line. labs() layer is added as well to improve the presentation of the diagrams. 
+The visualization stage of the derived model is similar to the previous procedure. ggplot() completes the work. Point diagrams are plotted by geom_point().  geom_smooth(method = "lm", se = FALSE) is there to visualize the linear regression line. labs() layer is added as well to improve the presentation of the diagrams.
 
 
 ## Data
-1 list
+1 Graphs
 
-"According to Fiaformulae, the champion of the Formula E Championship is determined by the driver with the highest cumulative points in the season. The following chart lists the drivers with the highest total points across seven seasons, comparing this data with the champion information provided by Formulaechronicles."
+According to The Official Home of Formula E, the champion of the Formula E championship is determined by the driver with the highest cumulative points in the season. The following chart lists the drivers with the highest total points across seven seasons, comparing this data with the champion information provided by Formula E Chronicles(2022).
 ```{r, echo=FALSE}
 best_drivers_summary <- FERR %>%
   group_by(season, driver) %>%
@@ -76,18 +65,19 @@ best_drivers_summary <- FERR %>%
   select(season, driver, total_points)
 best_drivers_summary
 ```
+(Graph 1.1)
 ```{r, echo=FALSE}
 include_graphics("img/champions.png")
 ```
+(Graph 1.2)
 
+2 Example
 
-2.
-"The report focuses on the 2nd season, identified as the most representative. New variables 'frequency' (number of races participated) and 'average_points' are added, as detailed in the list below."
-
-```{r season_2_data(example), echo=FALSE}
-season_2 <- FERR0 %>%
-  filter(season == 2)
-season_2_data <- season_2 %>%
+The table below excerpts data from the most representative Season 2, with new variables such as frequency (number of race participations), total_points (cumulative points), and avg_points (average points) being added.
+```{r season_1_data(example), echo=FALSE}
+season_1 <- FERR %>%
+  filter(season == 1)
+season_1_data <- season_1 %>%
   group_by(driver) %>%
   summarise(
     total_points = sum(points),
@@ -95,22 +85,23 @@ season_2_data <- season_2 %>%
     frequency = n()
     ) %>%
   arrange(desc(total_points)) 
-season_2_data
+season_1_data
 ```
+(Table 2.1)
 
-model 1:
+3 Models
 
-Model 1 is the relationship between average points and frequency of each driver in all 7 seasons.
+Model 1 is based on the original dataset FERR0 and specifically establishes the positive correlation between the participation frequency and the average scores of all drivers over the past seven seasons. 
 ```{r model1, echo=FALSE}
 #frequency
 freq <- 
-  select(FERR0, driver)  %>% 
+  select(FERR, driver)  %>% 
   table()
 freq_driver1 <- as.data.frame(freq)
 
 #average
 
-avg_driver1 <- FERR0 %>%
+avg_driver1 <- FERR %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
@@ -133,19 +124,18 @@ model1
 #r squared of original model
 glance(multi_re_fit1)$r.squared
 ```
+(Model 3.1)
 
-model 2:
-
-Model 2 is the relationship between average points and frequency of each driver in the first six seasons.We removed the data for the seventh season because it has a significant gap compared to the previous six seasons.
+Model 2 excludes all data from the 7th season and focuses solely on the relationship between frequency and average points in the first six seasons. The reason for this is that the 7th season had a maximum of only two races, potentially making the data from that season unrepresentative. Formula E Wiki also notes that the 2019/20 season experienced a mid-season hiatus from March to July 2020 due to the pandemic.
 ```{r model2, echo=FALSE}
 #freq filters season != 7 
-freq <- filter(FERR0, season != "7") %>%
+freq <- filter(FERR, season != "7") %>%
   select(driver)  %>% 
   table()
 freq_driver2 <- as.data.frame(freq)
 
 #average filters season != 7
-avg_driver2 <- filter(FERR0, season != 7 ) %>%
+avg_driver2 <- filter(FERR, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
@@ -175,10 +165,9 @@ model2
 #r squared model2, indicating an improvement
 glance(multi_re_fit2)$r.squared
 ```
+(Model 3.2)
 
-model 3:
-
-Model 3 is the relationship between average points and frequency among drivers whose frequency is greater than 3.We removed the data of drivers who Participated in less than three matches in a season to minimize uncertainty as much as possible.
+Model 3 represents the relationship between average points and frequency among drivers whose frequency is greater than 3. Removing the data of drivers who Participated in less than 2 races in a season is an attempt to minimize the uncertainty.
 ```{r model3, echo=FALSE}
 
 #freq filters freq >= 3
@@ -207,10 +196,9 @@ model3
 #r squared model3
 glance(multi_re_fit3)$r.squared
 ```
+(Model 3.3)
 
-model 4:
-
-Model 4 is the relationship between average points and frequency among drivers whose frequency is greater than 3 in the first six seasons.In other words, Model 4 is generated by combining the conditions of Model 2 and Model 3.
+Model 4 is generated by combining the conditions of Model 2 and Model 3 since these two factors may affect the final outcomes of the model.
 ```{r model4, echo=FALSE}
 
 #freq filters season != 7 and freq >= 3
@@ -218,7 +206,7 @@ freq_driver4 <- freq_driver2 %>%
   filter (Freq >= 3)
 
 #average filters season != 7
-avg_driver2 <- filter(FERR0, season != 7 ) %>%
+avg_driver2 <- filter(FERR, season != 7 ) %>%
   group_by(driver) %>%
   summarize(avg_points = mean(points, na.rm = TRUE))
 
@@ -247,12 +235,28 @@ model4
 #r squared model4, indicating an improvement
 glance(multi_re_fit4)$r.squared
 ```
+(Model 3.4)
+
+
 ## Findings
-Analysis: Figure 1.1 illustrates the computation of the highest-scoring driver for each season, which was subsequently compared with online-searched driver championship data spanning from 2014 to 2017. It was observed that the highest scorer in each season consistently held the championship title. Using the second season as an exemplar, the correlation between a driver's participation frequency and their average and total scores was explored. The analysis revealed that, as a driver's participation frequency increased, there was an observable trend towards higher average scores, indicative of an elevated skill level. This observation led to the formulation of a hypothesis positing that an increase in a driver's participation frequency would correspond to a higher average score. To test this hypothesis, a linear model encompassing seven seasons was constructed to examine the relationship between a driver's participation frequency and their average score. The initial model exhibited notable data dispersion with numerous outliers, resulting in a relatively low R-squared value of 0.44. To address this, a refined data filtering process was employed, wherein only drivers who participated in three or more races were included, resulting in reduced outliers and a discernible increase in the R-squared value. Further refinement involved excluding data from the seventh season due to the impact of the COVID-19 pandemic, as several drivers abstained from participating, rendering the season's data less representative. With this adjustment, the model demonstrated increased concentration, yielding an elevated R-squared value of 0.53. This implies a discernible correlation between a driver's participation frequency and their average performance, signifying a relationship between participation frequency and skill level. However, it is crucial to acknowledge that while increased participation may contribute to enhanced experience and potentially improved skills, it may also coincide with aging and a potential decline in athletic performance. Additionally, the inherent uncertainty in sports competitions contributes to the moderate strength of the relationship between participation frequency and average performance.
-Evaluation and Limitations: During the data filtering process, emphasis was placed on excluding non-representative data without the incorporation of random selection. Furthermore, the resultant sample size after data filtering may be limited, potentially compromising the generalizability and fairness of the results. In constructing the model, consideration was given to only one influencing factor on average scores, despite the likelihood of multiple factors influencing the outcomes.
+The analysis is augmented by Graph 1.1, which visualizes the highest-scoring drivers per season, juxtaposed with championship data(Graph 1.2) from 2014 to 2021. A key observation here is the consistent championship attainment by the highest accumulated points, suggesting a strong link between scoring and overall success. 
+
+Taking the second season as an example, we delved into the correlation between a driver's participation frequency and their average and total points. The analysis revealed that as a driver's participation frequency increased, there was a noticeable trend towards higher average points, indicating an elevated skill level. This observation led to the formulation of a hypothesis suggesting that an increase in a driver's participation frequency would correspond to a higher average score.
+
+To test this hypothesis, Models 1 through 4 were constructed. Model 1 indeed demonstrated a positive correlation between the two variables, but due to significant data dispersion, it resulted in a relatively low R-squared value of 0.445. Considering the reduction of outliers and the exclusion of data from the 7th season, the results were unexpected as Model 2's R-squared value decreased to 0.434. This indicated that while some outliers were removed, more valid data points were inadvertently excluded. To address this issue, data was optimized by filtering the frequency threshold within a reasonable range (frequency >= 3), resulting in an improved R-squared value of 0.522. Finally, to validate whether both filtering conditions would have a simultaneous effect, Model 4 combined these two filtering criteria and achieved the highest R-squared value of 0.531.
+
+Through multiple iterations and adjustments, the model demonstrated increased concentration, strongly suggesting a significant correlation between a driver's participation frequency and their average performance. This implies a positive relationship between participation frequency and skill level enhancement.
+
+However, the filtering criteria, on one hand, may introduce bias that skews the representation of the data, and on the other hand, may lead to a significant reduction in sample size, potentially failing to capture statistically general phenomena. Furthermore, R-squared values less than 1 still indicate that factors beyond the current scope, such as team dynamics, driver skill progression, and external circumstances, play a significant role in the outcomes.
+
+To enhance the comprehensiveness of our study, future research should incorporate additional variables that could influence a driver's performance. These may include team strategies, technological advancements in vehicles, and even psychological factors affecting drivers during races. An expanded dataset, possibly encompassing more racing seasons, would also provide a broader base for analysis, potentially leading to more conclusive insights.
+
+
+## Conclusion
+In general, this report illustrates that the more races a driver participates in, the higher their level of experience and skill, resulting in higher average and total scores.
+
 
 ## References
-
 Formula E Chronicles 2022, Formula E Champions, Formula E Chronicles, viewed 30 Nov 2023, <https://formulaechronicles.com/list-of-formula-e-champions/#:~:text=Points%20are%20awarded%20based%20on,the%20respective%20championship%20or%20trophy>.
 
 Formula E Wiki, S n.d., 2019/20 Formula E Championship, Formula E Wiki, viewed 30 Nov 2023, <https://formulae.fandom.com/wiki/2019/20_Formula_E_Championship>.
