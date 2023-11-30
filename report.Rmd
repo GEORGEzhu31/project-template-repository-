@@ -81,7 +81,7 @@ include_graphics("img/champions.png")
 
 2 Example
 
-The table below excerpts data from the most representative Season 2, with new variables such as frequency (number of race participation), total_points (cumulative points), and avg_points (average points) being added.
+The table below excerpts data from the most representative Season 1, with new variables such as frequency (number of race participation), total_points (cumulative points), and avg_points (average points) being added.
 ```{r season_1_data, echo=FALSE}
 season_1 <- FERR %>%
   filter(season == 1)
@@ -98,7 +98,7 @@ season_1_data
 
 3 Models
 
-Model 1 is based on the original dataset FERR and specifically establishes the positive correlation between the participation frequency and the average scores of all drivers over the past seven seasons. 
+Model 1 is based on the original data set FERR and specifically establishes the positive correlation between the participation frequency and the average scores of all drivers over the past seven seasons. 
 ```{r model1, echo=FALSE}
 #frequency
 freq <- select(FERR, driver)  %>% 
@@ -239,7 +239,7 @@ glance(multi_re_fit4)$r.squared
 
 The analysis is augmented by Graph 1.1, which visualizes the highest-scoring drivers per season, juxtaposed with championship data(Graph 1.2) from 2014 to 2021. A key observation here is the consistent championship attainment by the highest accumulated points, suggesting a strong link between scoring and overall success. Another notable finding is that all championship drivers participated in all races of the season, suggesting a certain relationship between 'points' and "frequency". 
 
-Taking the second season as an example, we delved into the correlation between a driver's participation frequency and their average and total points. The analysis revealed that as a driver's participation frequency increased, there was a noticeable trend towards higher average points, indicating an elevated skill level. This observation led to the formulation of a hypothesis suggesting that an increase in a driver's participation frequency would correspond to a higher average score.
+Taking the first season as an example, we delved into the correlation between a driver's participation frequency and their average and total points. The analysis revealed that as a driver's participation frequency increased, there was a noticeable trend towards higher average points, indicating an elevated skill level. This observation led to the formulation of a hypothesis suggesting that an increase in a driver's participation frequency would correspond to a higher average score.
 
 To test this hypothesis, Models 1 through 4 were constructed. Model 1 indeed demonstrated a positive correlation between the two variables, but due to significant data dispersion, it resulted in a relatively low R-squared value of 0.445. Considering the reduction of outliers and the exclusion of data from the 7th season, the results were unexpected as Model 2's R-squared value decreased to 0.434. This indicated that while some outliers were removed, more valid data points were inadvertently excluded. To address this issue, data was optimized by filtering the frequency threshold within a reasonable range (frequency >= 3), resulting in an improved R-squared value of 0.522. Finally, to validate whether both filtering conditions would have a simultaneous effect, Model 4 combined these two filtering criteria and achieved the highest R-squared value of 0.531.
 
