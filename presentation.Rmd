@@ -1,7 +1,7 @@
 ---
 title: "Formula E Championship Predictions"
 subtitle: "Frequency VS Average points"
-author: "Fighting Wolves <br> Jiayi Wan, Yunrui Lyu, Wanfang Zhen, Yifu Li & George Zhu"
+author: "&#x2694;&#xFE0F; Fighting Wolves &#x2694;&#xFE0F; <br> Jiayi Wan, Yunrui Lyu, Wanfang Zhen, Yifu Li & George Zhu"
 institute: "University of Edinburgh"
 date: "`r Sys.Date()`"
 output:
@@ -85,7 +85,7 @@ best_drivers_summary <- FERR %>%
 x_html <- knitr:: kable(best_drivers_summary, "html", align = "l") %>%
                    kable_styling(bootstrap_options = "bordered",
                                  full_width = F, 
-                                 font_size = 15) %>%
+                                 font_size = 17) %>%
                     column_spec(1:3, bold = T, color = "#1F4257", background = "white")
 x_html
 ```
@@ -113,7 +113,7 @@ season_1_data <- season_1 %>%
 y_html <- knitr:: kable(season_1_data, "html", align = "l") %>%
                    kable_styling(bootstrap_options = "basic",
                                  full_width = F, 
-                                 font_size = 10) %>%
+                                 font_size = 15) %>%
                     column_spec(1:4, bold = T, color = "#1F4257", background = "white")
 y_html
 ```
@@ -152,7 +152,7 @@ glance(single_re_fit1)$r.squared
 ---
 
 ##All Seasons
-```{r, model1,visualize, echo=FALSE, fig.width=10}
+```{r, model1,visualize, echo=FALSE, fig.width=8}
 model1 <- ggplot(data = freq_avg1, 
                  aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -197,7 +197,7 @@ glance(single_re_fit2)$r.squared
 
 ##First Six Seasons
 
-```{r,model2, visualize, echo=FALSE, fig.width=10}
+```{r,model2, visualize, echo=FALSE, fig.width=8}
 model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
    labs(title = "Average Points VS Frequency(First Six Seasons)",
@@ -230,7 +230,7 @@ glance(single_re_fit3)$r.squared
 
 ---
 ##Frequecny >=3
-```{r, model3, visualize, echo=FALSE, fig.width=10}
+```{r, model3, visualize, echo=FALSE, fig.width=8}
 model3 <- ggplot(data = freq_avg3, 
                  aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -269,7 +269,7 @@ glance(single_re_fit4)$r.squared
 ---
 
 ##First Six Seasons & Frequency>=3
-```{R, model4, visualize, echo=FALSE, fig.width=10}
+```{R, model4, visualize, echo=FALSE, fig.width=8}
 model4 <- ggplot(data = freq_avg4, 
                  aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -284,20 +284,20 @@ model4
 ---
 
 #Evaluation
-- Data Filtering Bias
+- ### Data Filtering Bias
 
-- Sample Size
+- ###Sample Size
 
-- Random Errors
+- ###Random Errors
 
-- External Factors
+- ###External Factors
 
 ---
 
-## Conclusion
--Tidying, Summarizing, visualizing, modeling, Analyzing
+# Conclusion
+- ###Tidying, Summarizing, visualizing, modeling, Analyzing
 
--moderate positive correlation:`FREQUENCY` & `AVERAGE POINTS`
+- ###moderate positive correlation:`FREQUENCY` & `AVERAGE POINTS`
 
 ---
 class:inverse, middle, center
