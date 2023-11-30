@@ -222,7 +222,7 @@ freq_avg3 <- left_join(freq_driver3, avg_driver1, by = "driver")
 ```
 
 ---
-##Frequecny >= 3
+##Frequency >= 3
 ```{r, model3, visualize, echo=FALSE, fig.width=6, fig.align='center'}
 model3 <- ggplot(data = freq_avg3, 
                  aes(x = Freq, y = avg_points)) + 
