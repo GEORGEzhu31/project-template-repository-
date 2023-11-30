@@ -105,12 +105,11 @@ season_1 <- FERR %>%
   filter(season == 1)
 season_1_data <- season_1 %>%
   group_by(driver) %>%
-  summarise(
-    total_points = sum(points),
-    average_points = mean(points),
-    frequency = n()
-    ) %>%
-  arrange(desc(total_points)) 
+  summarise(total_points = sum(points),
+            average_points = mean(points),
+            frequency = n()) %>%
+  arrange(desc(total_points)) %>%
+  slice(5:20)
 y_html <- knitr:: kable(season_1_data, "html", align = "l") %>%
                    kable_styling(bootstrap_options = "basic",
                                  full_width = F, 
