@@ -30,8 +30,8 @@ library(knitr)
 library(xaringanthemer)
 library(kableExtra)
 style_mono_accent(base_color = "#1c5253", 
-          header_font_google = google_font("Josefin Sans"),
-          text_font_google   = google_font("Montserrat", "300", "300i"),
+          header_font_google = google_font("Arial"),
+          text_font_google   = google_font("Arial"),
           code_font_google   = google_font("Fira Mono"))
 ```
 
@@ -151,16 +151,16 @@ glance(single_re_fit1)$r.squared
 ```
 ---
 
-##Plot
+##All Seasons
 ```{r, model1,visualize, echo=FALSE, fig.width=10}
-model1 <- ggplot(data = freq_avg1, aes(x = Freq, y = avg_points)) + 
+model1 <- ggplot(data = freq_avg1, 
+                 aes(x = Freq, y = avg_points)) + 
   geom_point() + 
-  labs(title = "the relationship between average points and frequency in all seasons",
+  labs(title = "Average Points VS Frequency(All Seasons)",
        x = "Frequency",
        y = "Average Points") +
-  geom_smooth(method = "lm",
-              formula = y ~ x,
-              se = FALSE)
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  theme(plot.title = element_text(hjust = 0.5))
 model1 
 ```
 
@@ -190,7 +190,7 @@ single_re_fit2 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg2)
 tidy(single_re_fit2)
-#r squared model2, indicating an improvement
+# improved R-squared
 glance(single_re_fit2)$r.squared
 ```
 ---
@@ -200,12 +200,11 @@ glance(single_re_fit2)$r.squared
 ```{r,model2, visualize, echo=FALSE, fig.width=10}
 model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
-   labs(title = "the relationship between average points and frequency in the first six seasons",
+   labs(title = "Average Points VS Frequency(First Six Seasons)",
        x = "Frequency",
        y = "Average Points") +
-  geom_smooth(method = "lm",
-              formula = y ~ x,
-              se = FALSE)
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  theme(plot.title = element_text(hjust = 0.5))
 model2
 ```
 ---
@@ -225,21 +224,21 @@ single_re_fit3 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg3)
 tidy(single_re_fit3)
-#r squared model3
+#dropped r-squared
 glance(single_re_fit3)$r.squared
 ```
 
 ---
 ##Frequecny >=3
 ```{r, model3, visualize, echo=FALSE, fig.width=10}
-model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) + 
+model3 <- ggplot(data = freq_avg3, 
+                 aes(x = Freq, y = avg_points)) + 
   geom_point() + 
-   labs(title = "the relationship among drivers whose frequency is greater than 3",
+   labs(title = "Average Points VS Frequency(Frequency >= 3)",
        x = "Frequency",
        y = "Average Points") +
-  geom_smooth(method = "lm",
-              formula = y ~ x,
-              se = FALSE)
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  theme(plot.title = element_text(hjust = 0.5))
 model3
 ```
 ---
@@ -271,29 +270,35 @@ glance(single_re_fit4)$r.squared
 
 ##First Six Seasons & Frequency>=3
 ```{R, model4, visualize, echo=FALSE, fig.width=10}
-model4 <- ggplot(data = freq_avg4, aes(x = Freq, y = avg_points)) + 
+model4 <- ggplot(data = freq_avg4, 
+                 aes(x = Freq, y = avg_points)) + 
   geom_point() + 
-  labs(title = "the relationship among drivers whose frequency is greater than 3 in the first six seasons",
+  labs(title = "Average Points VS Frequency(Combined)",
        x = "Frequency",
        y = "Average Points") +
-  geom_smooth(method = "lm",
-              formula = y ~ x,
-              se = FALSE)
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  theme(plot.title = element_text(hjust = 0.5))
 model4
 ```
 
 ---
 
 #Evaluation
-- the `inherent uncertainty` in sports competitions is strong.
+- Data Filtering Bias
 
-- the resultant `sample size` after data filtering may be `limited`, potentially compromising the generalizability and fairness of the results. 
+- Sample Size
 
-- The 0.53 r.square implies a discernible correlation between a driver's participation frequency and their average performance, signifying a relationship between  `participation frequency and skill level.` 
+- Random Errors
 
-- The linear regression can show the relationship between independent variable and dependent variable  `straightforwardly`.
+- External Factors
 
 ---
 
+## Conclusion
+-Tidying, Summarizing, visualizing, modeling, Analyzing
+
+-moderate positive correlation:`FREQUENCY` & `AVERAGE POINTS`
+
+---
 class:inverse, middle, center
-#Thanks for listening!
+#Thanks for Listening!
