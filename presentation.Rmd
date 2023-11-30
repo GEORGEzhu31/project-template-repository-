@@ -62,7 +62,7 @@ include_graphics("img/FE.jpg")
 ```
 ---
 
-## Drivers' Championships in Seven Seasons
+## Champions in Seven Seasons
 
 .pull-left[
 ```{r best-driver, echo=FALSE}
