@@ -48,7 +48,7 @@ FERR <- read_csv("data/formula_e_race_results.csv") %>%
 
 class:inverse, center, middle
 
-## Whether the more races a driver participates in,the higher the average points will be
+## Whether the more races a driver participates in, the higher the average points will be
 
 ---
 
@@ -152,7 +152,7 @@ glance(single_re_fit1)$r.squared
 ---
 
 ##All Seasons
-```{r, model1,visualize, echo=FALSE, fig.width=8}
+```{r, model1,visualize, echo=FALSE, fig.width=6, fig.align='center'}
 model1 <- ggplot(data = freq_avg1, 
                  aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -197,7 +197,7 @@ glance(single_re_fit2)$r.squared
 
 ##First Six Seasons
 
-```{r,model2, visualize, echo=FALSE, fig.width=8}
+```{r,model2, visualize, echo=FALSE, fig.width=6, fig.align='center'}
 model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) + 
   geom_point() + 
    labs(title = "Average Points VS Frequency(First Six Seasons)",
@@ -230,7 +230,7 @@ glance(single_re_fit3)$r.squared
 
 ---
 ##Frequecny >=3
-```{r, model3, visualize, echo=FALSE, fig.width=8}
+```{r, model3, visualize, echo=FALSE, fig.width=6, fig.align='center'}
 model3 <- ggplot(data = freq_avg3, 
                  aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -269,7 +269,7 @@ glance(single_re_fit4)$r.squared
 ---
 
 ##First Six Seasons & Frequency>=3
-```{R, model4, visualize, echo=FALSE, fig.width=8}
+```{R, model4, visualize, echo=FALSE, fig.width=6, fig.align='center'}
 model4 <- ggplot(data = freq_avg4, 
                  aes(x = Freq, y = avg_points)) + 
   geom_point() + 
@@ -297,7 +297,7 @@ model4
 # Conclusion
 - ###Tidying, Summarizing, visualizing, modeling, Analyzing
 
-- ###moderate positive correlation:`FREQUENCY` & `AVERAGE POINTS`
+- ###moderate positive correlation:FREQUENCY & AVERAGE POINTS
 
 ---
 class:inverse, middle, center
