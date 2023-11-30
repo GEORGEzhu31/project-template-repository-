@@ -295,23 +295,17 @@ avg_driver2 &lt;-
 freq_avg2 &lt;- left_join(freq_driver2, avg_driver2, by = "driver")
 ```
 
-
-```
-## # A tibble: 2 × 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)   1.02      0.397       2.58 1.20e- 2
-## 2 Freq          0.0961    0.0134      7.17 7.40e-10
-```
-
-```
-## [1] 0.4344037
-```
 ---
 
 ##First Six Seasons
 
 &lt;img src="presentation_files/figure-html/model2, visualize-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+
+```
+## [1] 0.4344037
+```
+
 ---
 ##Frequency&gt;=3
 
@@ -324,22 +318,15 @@ freq_driver3 &lt;-
 freq_avg3 &lt;- left_join(freq_driver3, avg_driver1, by = "driver")
 ```
 
+---
+##Frequecny &gt;=3
+&lt;img src="presentation_files/figure-html/model3, visualize-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
-```
-## # A tibble: 2 × 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)   0.847     0.422       2.01 4.96e- 2
-## 2 Freq          0.0980    0.0126      7.75 2.25e-10
-```
 
 ```
 ## [1] 0.5218821
 ```
 
----
-##Frequecny &gt;=3
-&lt;img src="presentation_files/figure-html/model3, visualize-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 ---
 ##First Six Seasons &amp; Frequency&gt;=3
 
@@ -356,22 +343,15 @@ avg_driver2 &lt;-
 freq_avg4 &lt;- left_join(freq_driver4, avg_driver2, by = "driver")
 ```
 
-
-```
-## # A tibble: 2 × 5
-##   term        estimate std.error statistic  p.value
-##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1 (Intercept)    0.760    0.421       1.81 7.65e- 2
-## 2 Freq           0.102    0.0129      7.89 1.30e-10
-```
-
-```
-## [1] 0.5311562
-```
 ---
 
 ##First Six Seasons &amp; Frequency&gt;=3
 &lt;img src="presentation_files/figure-html/model4, visualize-1.png" width="65%" style="display: block; margin: auto;" /&gt;
+
+
+```
+## [1] 0.5311562
+```
 
 ---
 
