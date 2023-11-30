@@ -54,7 +54,7 @@ The visualization stage of the derived model was similar to the previous procedu
 1 Graphs
 
 According to The Official Home of Formula E, the champion of the Formula E championship is determined by the driver with the highest cumulative points in the season. The accompanying chart lists the drivers with the highest total points across seven seasons, and this data is compared with the champion information provided by Formula E Chronicles(2022). Additionally, this analysis includes a test to determine whether these champions participated in every race of their respective seasons.
-```{r best_drivers_summary}
+```{r best_drivers_summary, echo=FALSE}
 best_drivers_summary <- FERR %>%
   group_by(season, driver) %>%
   summarise(total_points = sum(points), .groups = 'drop') %>%
@@ -81,7 +81,7 @@ include_graphics("img/champions.png")
 
 2 Example
 
-The table below excerpts data from the most representative Season 1, with new variables such as frequency (number of race participation), total_points (cumulative points), and avg_points (average points) being added.
+The table below is a subset data from the most representative Season 1, with new variables such as frequency (number of race participation), total_points (cumulative points), and avg_points (average points) being added.
 ```{r season_1_data, echo=FALSE}
 season_1 <- FERR %>%
   filter(season == 1)
