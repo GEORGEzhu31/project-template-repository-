@@ -81,7 +81,7 @@ include_graphics("img/champions.png")
 
 2 Example
 
-The table below excerpts data from the most representative Season 2, with new variables such as frequency (number of race participations), total_points (cumulative points), and avg_points (average points) being added.
+The table below excerpts data from the most representative Season 2, with new variables such as frequency (number of race participation), total_points (cumulative points), and avg_points (average points) being added.
 ```{r season_1_data(example), echo=FALSE}
 season_1 <- FERR %>%
   filter(season == 1)
@@ -92,7 +92,8 @@ season_1_data <- season_1 %>%
     average_points = mean(points),
     frequency = n()
     ) %>%
-  arrange(desc(total_points)) 
+  arrange(desc(total_points)) %>%
+  slice(5:20)
 season_1_data
 ```
 (Table 2.1)
@@ -126,6 +127,7 @@ model1 <- ggplot(data = freq_avg1, aes(x = Freq, y = avg_points)) +
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
+              formula = y ~ x,
               se = FALSE)
 model1 
 
@@ -154,10 +156,6 @@ freq_avg2 <- left_join(freq_driver2, avg_driver2, by = "driver")
 multi_re_fit2 <- linear_reg() %>%
   set_engine("lm") %>%
   fit(avg_points ~ Freq, data = freq_avg2)
-
-#r squared model2, indicating an improvement
-glance(multi_re_fit2)$r.squared
-
 multi_re_fit2
 
 #visualize model2
@@ -167,6 +165,7 @@ model2 <- ggplot(data = freq_avg2, aes(x = Freq, y = avg_points)) +
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
+              formula = y ~ x,
               se = FALSE)
 model2
 
@@ -198,6 +197,7 @@ model3 <- ggplot(data = freq_avg3, aes(x = Freq, y = avg_points)) +
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
+              formula = y ~ x,
               se = FALSE)
 model3
 
@@ -235,6 +235,7 @@ model4 <- ggplot(data = freq_avg4, aes(x = Freq, y = avg_points)) +
        x = "Frequency",
        y = "Average Points") +
   geom_smooth(method = "lm",
+              formula = y ~ x,
               se = FALSE)
 
 
@@ -246,7 +247,8 @@ glance(multi_re_fit4)$r.squared
 (Model 3.4)
 
 
-## Findings
+## Evaluation
+
 The analysis is augmented by Graph 1.1, which visualizes the highest-scoring drivers per season, juxtaposed with championship data(Graph 1.2) from 2014 to 2021. A key observation here is the consistent championship attainment by the highest accumulated points, suggesting a strong link between scoring and overall success. Another notable finding is that all championship drivers participated in all races of the season, suggesting a certain relationship between 'points' and "frequency". 
 
 Taking the second season as an example, we delved into the correlation between a driver's participation frequency and their average and total points. The analysis revealed that as a driver's participation frequency increased, there was a noticeable trend towards higher average points, indicating an elevated skill level. This observation led to the formulation of a hypothesis suggesting that an increase in a driver's participation frequency would correspond to a higher average score.
@@ -255,13 +257,13 @@ To test this hypothesis, Models 1 through 4 were constructed. Model 1 indeed dem
 
 Through multiple iterations and adjustments, the model demonstrated increased concentration, strongly suggesting a significant correlation between a driver's participation frequency and their average performance. This implies a positive relationship between participation frequency and skill level enhancement.
 
-However, the filtering criteria, on one hand, may introduce bias that skews the representation of the data, and on the other hand, may lead to a significant reduction in sample size, potentially failing to capture statistically general phenomena. Furthermore, R-squared values less than 1 still indicate that factors beyond the current scope, such as team dynamics, driver skill progression, and external circumstances, play a significant role in the outcomes.
+However, four primary research limitations have been identified. First, the filtering criteria may introduce bias, thus distorting the representation of the data. Second, the filtering process could lead to a significant reduction in the number of samples, potentially failing to capture statistically general phenomena. In addition, some unavoidable random errors, including technical failures, weather conditions, and track conditions, may affect the accuracy of the predictions. MLANDRY (2021) also mentioned that the top six drivers were forced into the first group, which had dirtier tracks and less grip. Finally, R-squared values less than 1 still indicate that factors beyond the current scope, such as team dynamics, driver skill progression, and external circumstances, play a significant role in the outcomes.
 
-To enhance the comprehensiveness of our study, future research should incorporate additional variables that could influence a driver's performance. These may include team strategies, technological advancements in vehicles, and even psychological factors affecting drivers during races. An expanded dataset, possibly encompassing more racing seasons, would also provide a broader base for analysis, potentially leading to more conclusive insights.
+To enhance the comprehensiveness of the study, future research should incorporate additional variables that could influence a driver's performance. These may include team strategies, technological advancements in vehicles, and even psychological factors affecting drivers during races. An expanded data set, possibly encompassing more racing seasons, would also provide a broader base for analysis, potentially leading to more conclusive insights.
 
 
 ## Conclusion
-This report aims to demonstrate that the number of races the drivers participate in has a moderate positive effect on the points they earn. The analysis started with tidying and summarizing, inspired an initial idea about potential relationships can be explored from the dataframes. Further works involved modeling, visualizing and evaluating. A linear regression model was used to predict the relationship between the frequency of participation and the average score of individual drivers. The r-squared value of the model was improved from 0.44 to 0.53 by removing detected outliers.The Limitations of the model, such as potential bias and reduced sample size, were also discussed. The findings of this study is expected to bring some possible inspirations to the field of events. For instance, team managers who aim to optimize their drivers’ performance.
+In conclusion, this report demonstrates a moderate positive correlation between race participation and driver performance in Formula E. Utilizing data tidying, summarizing, visualizing, and linear regression analysis, it improved the model's R-squared value from 0.44 to 0.53 by removing detected outliers. Despite potential biases and reduced sample sizes, the findings of this study are expected to bring some possible inspirations to the field of race, for instance, team managers who aim to optimize their drivers’ performance.
 
 
 ## References
