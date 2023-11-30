@@ -44,13 +44,13 @@ class: center, middle, inverse, title-slide
 
 class:inverse, center, middle
 
-## Whether the more races a driver participates in, the higher the average points will be
+## More races, higher average points?
 
 ---
 
 ##How to Win the Championship in Formula-E?
 
-- The driver with the most points is the `driver's champion`(The Official Home of Formula E).
+- The driver who accumulates the most points is the `driver's champion`(The Official Home of Formula E).
 
 
 &lt;div class="figure" style="text-align: center"&gt;
@@ -249,6 +249,7 @@ class: inverse, center, middle
 
 
 ```r
+# linear regression model, "lm" engine
 single_re_fit1 &lt;- linear_reg() %&gt;%
   set_engine("lm") %&gt;%
   fit(avg_points ~ Freq, data = freq_avg1)
@@ -264,6 +265,7 @@ tidy(single_re_fit1)
 ```
 
 ```r
+# R-squared
 glance(single_re_fit1)$r.squared
 ```
 
@@ -280,18 +282,17 @@ glance(single_re_fit1)$r.squared
 ##First Six Seasons
 
 ```r
-#freq filters season != 7 
-freq &lt;- 
-  filter(FERR, season != "7") %&gt;%
+# filtering season 7 
+freq &lt;- filter(FERR, season != "7") %&gt;%
   select(driver)  %&gt;% 
   table()
 freq_driver2 &lt;- as.data.frame(freq)
-#average filters season != 7
-avg_driver2 &lt;-
-  filter(FERR, season != 7 ) %&gt;%
+
+# average points after filtering season 7
+avg_driver2 &lt;- filter(FERR, season != 7 ) %&gt;%
   group_by(driver) %&gt;%
   summarize(avg_points = mean(points, na.rm = TRUE))
-#filters season != 7
+
 freq_avg2 &lt;- left_join(freq_driver2, avg_driver2, by = "driver")
 ```
 
@@ -307,19 +308,18 @@ freq_avg2 &lt;- left_join(freq_driver2, avg_driver2, by = "driver")
 ```
 
 ---
-##Frequency&gt;=3
+##Frequency &gt;= 3
 
 ```r
-#freq filters freq &gt;= 3
-freq_driver3 &lt;-
-  freq_driver1 %&gt;% filter (Freq &gt;= 3)
+#filtering frequency &gt;= 3
+freq_driver3 &lt;- freq_driver1 %&gt;% 
+  filter (Freq &gt;= 3)
 
-#filters freq &gt;= 3
 freq_avg3 &lt;- left_join(freq_driver3, avg_driver1, by = "driver")
 ```
 
 ---
-##Frequecny &gt;=3
+##Frequecny &gt;= 3
 &lt;img src="presentation_files/figure-html/model3, visualize-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 
@@ -328,24 +328,25 @@ freq_avg3 &lt;- left_join(freq_driver3, avg_driver1, by = "driver")
 ```
 
 ---
-##First Six Seasons &amp; Frequency&gt;=3
+##First Six Seasons &amp; Frequency &gt;= 3
 
 ```r
-#freq filters season != 7 and freq &gt;= 3
-freq_driver4 &lt;-
-  freq_driver2 %&gt;% filter (Freq &gt;= 3)
-#average filters season != 7
-avg_driver2 &lt;-
-  filter(FERR, season != 7 ) %&gt;%
+#filtering frequency &gt;= 3
+freq_driver4 &lt;- freq_driver2 %&gt;% 
+  filter (Freq &gt;= 3)
+
+#filtering season 7
+avg_driver2 &lt;- filter(FERR, season != 7 ) %&gt;%
   group_by(driver) %&gt;%
   summarize(avg_points = mean(points, na.rm = TRUE))
-#filters freq &gt;= 3 and season != 7
+
+#combining
 freq_avg4 &lt;- left_join(freq_driver4, avg_driver2, by = "driver")
 ```
 
 ---
 
-##First Six Seasons &amp; Frequency&gt;=3
+##First Six Seasons &amp; Frequency &gt;= 3
 &lt;img src="presentation_files/figure-html/model4, visualize-1.png" width="65%" style="display: block; margin: auto;" /&gt;
 
 
@@ -356,7 +357,7 @@ freq_avg4 &lt;- left_join(freq_driver4, avg_driver2, by = "driver")
 ---
 
 #Evaluation
-- ### Data Filtering Bias
+- ###Data Filtering Bias
 
 - ###Sample Size
 
@@ -369,7 +370,7 @@ freq_avg4 &lt;- left_join(freq_driver4, avg_driver2, by = "driver")
 # Conclusion
 - ###Tidying, Summarizing, visualizing, modeling, Analyzing
 
-- ###moderate positive correlation:FREQUENCY &amp; AVERAGE POINTS
+- ###Moderate Positive Correlation: `Frequency` &amp; `Average Points`
 
 ---
 class:inverse, middle, center
